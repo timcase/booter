@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Grid, Navbar, Jumbotron, Button } from 'react-bootstrap';
+import { Nav, NavItem, Grid, Navbar, Jumbotron, Button } from 'react-bootstrap';
+import { IndexLink, Link } from 'react-router';
 
 class App extends Component {
   render() {
@@ -13,6 +14,11 @@ class App extends Component {
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
+            <Nav bsStyle="pills">
+              <NavItem href="/#">Home</NavItem>
+              <NavItem href="/#/about">About</NavItem>
+              <NavItem href="/#/repos">Repos</NavItem>
+            </Nav>
           </Grid>
         </Navbar>
         <Jumbotron>
@@ -27,8 +33,20 @@ class App extends Component {
                 View React Bootstrap Docs
               </Button>
             </p>
+            <ul>
+              <li><Link to="/about" activeStyle={{ color: 'red'}}>About</Link></li>
+              <li><Link to="/repos" activeStyle={{ color: 'red'}}>Repos</Link></li>
+            </ul>
+            <ul>
+              <li><IndexLink to="/" activeClassName="text-warning">Home</IndexLink></li>
+              <li><Link to="/about" activeClassName="text-warning">About</Link></li>
+              <li><Link to="/repos" activeClassName="text-warning">Repos</Link></li>
+            </ul>
           </Grid>
         </Jumbotron>
+        <Grid>
+          {this.props.children}
+        </Grid>
       </div>
     );
   }

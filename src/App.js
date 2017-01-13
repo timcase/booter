@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Navbar, Jumbotron, Button } from 'react-bootstrap';
+import Todo from './todo';
 
 class App extends Component {
   render() {
@@ -29,6 +30,7 @@ class App extends Component {
             </p>
           </Grid>
         </Jumbotron>
+        <Todo />
       </div>
     );
   }

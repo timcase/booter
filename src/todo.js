@@ -15,27 +15,15 @@ class Todo extends Component {
 
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
-                          <li className="ui-state-default">
+                          { this.props.todos.map(todo =>
+                          <li key={todo.get('id')} className="ui-state-default">
                               <div className="checkbox">
-                                  <label>
-                                      <input type="checkbox" value="" />Take out the trash</label>
+                                  <label>{todo.get('text')}</label>
                               </div>
-                          </li>
-                          <li className="ui-state-default">
-                              <div className="checkbox">
-                                  <label>
-                                      <input type="checkbox" value="" />Buy bread</label>
-                              </div>
-                          </li>
-                          <li className="ui-state-default">
-                              <div className="checkbox">
-                                  <label>
-                                      <input type="checkbox" value="" />Teach penguins to fly</label>
-                              </div>
-                          </li>
+                          </li>)}
                       </ul>
                       <div className="todo-footer">
-                          <strong><span className="count-todos">3</span></strong> Items Left
+                          <strong><span className="count-todos">{this.props.todos.size}</span></strong> Items Left
                       </div>
                   </div>
               </div>

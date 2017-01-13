@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { Grid, Navbar, Jumbotron, Button } from 'react-bootstrap';
 import Todo from './todo';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => ({
+  todos: state.todos
+});
 
 class App extends Component {
   render() {
@@ -30,10 +35,10 @@ class App extends Component {
             </p>
           </Grid>
         </Jumbotron>
-        <Todo />
+        <Todo todos={this.props.todos} />
       </div>
     );
   }
 }
 
-export default App;
+export default connect(mapStateToProps)(App);

@@ -4,8 +4,15 @@ import App from './App';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
+import { createStore } from 'redux';
+import reducer from './reducers';
+import { Provider } from 'react-redux';
+
+const store = createStore(reducer);
 
 ReactDOM.render(
-  <App />,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 );

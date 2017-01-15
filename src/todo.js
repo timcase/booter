@@ -15,15 +15,15 @@ class Todo extends Component {
 
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
-                          { this.props.todos.map(todo =>
-                          <li key={todo.get('id')} className="ui-state-default">
+                          { this.props.store.getState().todos.map(todo =>
+                          <li key={todo.id} className="ui-state-default">
                               <div className="checkbox">
-                                  <label>{todo.get('text')}</label>
+                                  <label>{todo.text}</label>
                               </div>
                           </li>)}
                       </ul>
                       <div className="todo-footer">
-                          <strong><span className="count-todos">{this.props.todos.size}</span></strong> Items Left
+                          <strong><span className="count-todos">{this.props.store.getState().todos.length}</span></strong> Items Left
                       </div>
                   </div>
               </div>

@@ -35,7 +35,7 @@ class App extends Component {
             </p>
           </Grid>
         </Jumbotron>
-        <Todo todos={this.props.todos} />
+        <Todo store={this.props.store} />
       </div>
     );
   }

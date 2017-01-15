@@ -22,6 +22,10 @@ class Todo extends Component {
     });
   }
 
+  handleDeleteClick = () => {
+    this.props.deleteTodo(this.props.todo.id);
+  }
+
   render() {
     let element;
     if (this.state.editing) {
@@ -36,6 +40,11 @@ class Todo extends Component {
       element = (<li className="ui-state-default">
         <div className="checkbox">
             <label onDoubleClick={this.handleDoubleClick}>{this.props.todo.text}</label>
+            <button
+              onClick={this.handleDeleteClick}
+             className="remove-item btn btn-default btn-xs pull-right">
+              <span className="glyphicon glyphicon-remove"></span>
+            </button>
         </div>
       </li>)
     }

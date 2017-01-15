@@ -7,10 +7,16 @@ class TodoList extends Component {
 
   create = (text) => {
     this.props.store.dispatch({type: 'ADD_TODO', text: text})
+    this.forceUpdate();
   }
 
   update = (id, text) => {
     this.props.store.dispatch({type: 'UPDATE_TODO', id: id, text: text})
+    this.forceUpdate();
+  }
+
+  deleteTodo = (id) => {
+    this.props.store.dispatch({type: "DELETE_TODO", id: id});
     this.forceUpdate();
   }
 
@@ -21,7 +27,7 @@ class TodoList extends Component {
               <div className="col-md-6">
                   <div className="todolist not-done">
                   <h1>Todos</h1>
-                    <TodoInput save={this.save} />
+                    <TodoInput save={this.create} />
 
 
                           <button id="checkAll"
@@ -29,8 +35,9 @@ class TodoList extends Component {
 
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
-                          { todos.map(todo =>
-                              <Todo key={todo.id} update={this.update} todo={todo} />
+                          { this.props.store.getState().todos.map(todo =>
+                            <Todo key={todo.id} deleteTodo={this.deleteTodo}
+                            update={this.update} todo={todo} />
                             )}
                       </ul>
                       <div className="todo-footer">
@@ -42,7 +49,10 @@ class TodoList extends Component {
                   <div className="todolist">
                   <h1>Already Done</h1>
                       <ul id="done-items" className="list-unstyled">
-                          <li>Some item <button className="remove-item btn btn-default btn-xs pull-right">
+                        <li>Some item
+
+
+      <button className="remove-item btn btn-default btn-xs pull-right">
                           <span className="glyphicon glyphicon-remove"></span></button></li>
 
                       </ul>

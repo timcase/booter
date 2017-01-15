@@ -3,6 +3,12 @@ import './todo.css';
 import TodoInput from './todo_input';
 import Todo from './todo';
 
+const TODO_FILTERS = {
+  'all': () => true,
+  'active': todo => !todo.completed,
+  'completed': todo => todo.completed
+}
+
 class TodoList extends Component {
 
   create = (text) => {
@@ -20,7 +26,30 @@ class TodoList extends Component {
     this.forceUpdate();
   }
 
+  markCompleted = (id) => {
+    this.props.store.dispatch({type: 'COMPLETE_TODO', id: id});
+    this.forceUpdate();
+  }
+
+  markAllCompleted = () => {
+    this.props.store.dispatch({type: 'COMPLETE_ALL'});
+    this.forceUpdate();
+  }
+
+  get todos(){
+    return this.props.store.getState().todos;
+  }
+
+  get completedTodos(){
+    return this.todos.filter(TODO_FILTERS['completed']);
+  }
+
+  get incompleteTodos(){
+    return this.todos.filter(TODO_FILTERS['active']);
+  }
+
   render() {
+
     return (
       <div className="container">
           <div className="row">
@@ -31,17 +60,19 @@ class TodoList extends Component {
 
 
                           <button id="checkAll"
-                          className="btn btn-success">Mark all as done</button>
-
+                            onClick={this.markAllCompleted}
+                            className="btn btn-success">Mark all as done</button>
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
-                          { this.props.store.getState().todos.map(todo =>
+                          { this.incompleteTodos.map(todo =>
                             <Todo key={todo.id} deleteTodo={this.deleteTodo}
-                            update={this.update} todo={todo} />
+                              update={this.update}
+                              markCompleted={this.markCompleted}
+                            todo={todo} />
                             )}
                       </ul>
                       <div className="todo-footer">
-                          <strong><span className="count-todos">{this.props.store.getState().todos.length}</span></strong> Items Left
+                          <strong><span className="count-todos">{this.incompleteTodos.length}</span></strong> Items Left
                       </div>
                   </div>
               </div>
@@ -49,12 +80,9 @@ class TodoList extends Component {
                   <div className="todolist">
                   <h1>Already Done</h1>
                       <ul id="done-items" className="list-unstyled">
-                        <li>Some item
-
-
-      <button className="remove-item btn btn-default btn-xs pull-right">
-                          <span className="glyphicon glyphicon-remove"></span></button></li>
-
+                          { this.completedTodos.map(todo =>
+                            <li key={todo.id} >{todo.text}</li>
+                          )}
                       </ul>
                   </div>
               </div>

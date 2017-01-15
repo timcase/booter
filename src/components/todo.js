@@ -26,6 +26,10 @@ class Todo extends Component {
     this.props.deleteTodo(this.props.todo.id);
   }
 
+  handleCompletedClick = () => {
+    this.props.markCompleted(this.props.todo.id);
+  }
+
   render() {
     let element;
     if (this.state.editing) {
@@ -39,6 +43,7 @@ class Todo extends Component {
     } else {
       element = (<li className="ui-state-default">
         <div className="checkbox">
+            <input type="checkbox" onClick={this.handleCompletedClick} />
             <label onDoubleClick={this.handleDoubleClick}>{this.props.todo.text}</label>
             <button
               onClick={this.handleDeleteClick}

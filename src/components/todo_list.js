@@ -4,9 +4,14 @@ import TodoInput from './todo_input';
 import Todo from './todo';
 
 class TodoList extends Component {
-  save = (text) => {
+
+  create = (text) => {
     this.props.store.dispatch({type: 'ADD_TODO', text: text})
-    this.setState({ text: '' })
+  }
+
+  update = (id, text) => {
+    this.props.store.dispatch({type: 'UPDATE_TODO', id: id, text: text})
+    this.forceUpdate();
   }
 
   render() {
@@ -24,8 +29,8 @@ class TodoList extends Component {
 
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
-                          { this.props.store.getState().todos.map(todo =>
-                              <Todo key={todo.id} todo={todo} />
+                          { todos.map(todo =>
+                              <Todo key={todo.id} update={this.update} todo={todo} />
                             )}
                       </ul>
                       <div className="todo-footer">

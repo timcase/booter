@@ -7,6 +7,11 @@ class TodoInput extends Component {
       text: ''
     }
   }
+  componentDidMount() {
+    this.setState({
+      text: this.props.text || ''
+    });
+  }
   handleChange = (e) => {
     this.setState({
       text: e.target.value

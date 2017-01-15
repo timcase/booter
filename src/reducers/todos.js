@@ -15,6 +15,7 @@ const initialState = [
 ]
 
 export default function todos( state = initialState, action){
+
     switch (action.type) {
       case 'ADD_TODO':
         return [
@@ -25,6 +26,12 @@ export default function todos( state = initialState, action){
           },
           ...state
         ]
+      case 'UPDATE_TODO':
+        return state.map(todo =>
+          todo.id === action.id ?
+            { ...todo, text: action.text } :
+            todo
+        )
       default:
         return state;
     }

@@ -1,25 +1,12 @@
 import React, { Component } from 'react';
-import './todo.css'
+import './todo.css';
+import TodoInput from './todo_input';
+import Todo from './todo';
 
-class Todo extends Component {
-  constructor(){
-    super()
-    this.state = {
-      text: ''
-    }
-  }
-  handleChange = (e) => {
-    this.setState({
-      text: e.target.value
-    });
-  }
-
-  handleSubmit = (e) => {
-    const text = e.target.value.trim()
-    if (e.which === 13) {
-      this.props.store.dispatch({type: 'ADD_TODO', text: text})
-      this.setState({ text: '' })
-    }
+class TodoList extends Component {
+  save = (text) => {
+    this.props.store.dispatch({type: 'ADD_TODO', text: text})
+    this.setState({ text: '' })
   }
 
   render() {
@@ -29,12 +16,8 @@ class Todo extends Component {
               <div className="col-md-6">
                   <div className="todolist not-done">
                   <h1>Todos</h1>
-                      <input type="text"
-                          className="form-control add-todo"
-                          value={this.state.text}
-                          onKeyDown={this.handleSubmit}
-                          onChange={this.handleChange}
-                          placeholder="Add todo"/>
+                    <TodoInput save={this.save} />
+
 
                           <button id="checkAll"
                           className="btn btn-success">Mark all as done</button>
@@ -42,11 +25,8 @@ class Todo extends Component {
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
                           { this.props.store.getState().todos.map(todo =>
-                          <li key={todo.id} className="ui-state-default">
-                              <div className="checkbox">
-                                  <label>{todo.text}</label>
-                              </div>
-                          </li>)}
+                              <Todo key={todo.id} todo={todo} />
+                            )}
                       </ul>
                       <div className="todo-footer">
                           <strong><span className="count-todos">{this.props.store.getState().todos.length}</span></strong> Items Left
@@ -69,4 +49,4 @@ class Todo extends Component {
   }
 }
 
-export default Todo;
+export default TodoList;

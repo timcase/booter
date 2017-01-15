@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Navbar, Jumbotron, Button } from 'react-bootstrap';
-import Todo from './todo';
-import { connect } from 'react-redux';
-
-const mapStateToProps = state => ({
-  todos: state.todos
-});
+import TodoList from './components/todo_list';
 
 class App extends Component {
   render() {
@@ -35,10 +30,10 @@ class App extends Component {
             </p>
           </Grid>
         </Jumbotron>
-        <Todo store={this.props.store} />
+        <TodoList store={this.props.store} />
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default App;

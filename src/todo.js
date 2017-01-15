@@ -2,6 +2,25 @@ import React, { Component } from 'react';
 import './todo.css'
 
 class Todo extends Component {
+  constructor(){
+    super()
+    this.state = {
+      text: ''
+    }
+  }
+  handleChange = (e) => {
+    this.setState({
+      text: e.target.value
+    });
+  }
+
+  handleSubmit = (e) => {
+    const text = e.target.value.trim()
+    if (e.which === 13) {
+      this.props.store.dispatch({type: 'ADD_TODO', text: text})
+      this.setState({ text: '' })
+    }
+  }
 
   render() {
     return (
@@ -10,8 +29,15 @@ class Todo extends Component {
               <div className="col-md-6">
                   <div className="todolist not-done">
                   <h1>Todos</h1>
-                      <input type="text" className="form-control add-todo" placeholder="Add todo"/>
-                          <button id="checkAll" className="btn btn-success">Mark all as done</button>
+                      <input type="text"
+                          className="form-control add-todo"
+                          value={this.state.text}
+                          onKeyDown={this.handleSubmit}
+                          onChange={this.handleChange}
+                          placeholder="Add todo"/>
+
+                          <button id="checkAll"
+                          className="btn btn-success">Mark all as done</button>
 
                           <hr/>
                           <ul id="sortable" className="list-unstyled">

@@ -36,7 +36,7 @@ class App extends Component {
 
   render() {
     return (
-      <Main store={this.props.store} callbacks={this.callbacks} />
+      <Main callbacks={this.callbacks} />
     );
   }
 }

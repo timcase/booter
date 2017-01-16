@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './todo.css';
 import TodoInput from './todo_input';
 import Todo from './todo';
+import { connect } from 'react-redux';
 
 const TODO_FILTERS = {
   'all': () => true,
@@ -9,10 +10,14 @@ const TODO_FILTERS = {
   'completed': todo => todo.completed
 }
 
+const mapStateToProps = (state) => {
+  return { todos: state.todos };
+};
+
 class TodoList extends Component {
 
   get todos(){
-    return this.props.store.getState().todos;
+    return this.props.todos;
   }
 
   get completedTodos(){
@@ -67,4 +72,4 @@ class TodoList extends Component {
   }
 }
 
-export default TodoList;
+export default connect(mapStateToProps)(TodoList);

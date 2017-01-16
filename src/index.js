@@ -6,10 +6,13 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import { createStore } from 'redux';
 import reducer from './reducers';
+import { Provider } from 'react-redux';
 
 const store = createStore(reducer);
 
 ReactDOM.render(
-    <App store={store}/>,
+  <Provider store={store} >
+    <App store={store}/>
+  </Provider>,
   document.getElementById('root')
 );

@@ -31,7 +31,7 @@ class Main extends Component {
             </p>
           </Grid>
         </Jumbotron>
-        <TodoList callbacks={this.props.callbacks} store={this.props.store} />
+        <TodoList callbacks={this.props.callbacks} todos={this.props.todos} />
       </div>
     )
   }

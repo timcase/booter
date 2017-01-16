@@ -11,31 +11,6 @@ const TODO_FILTERS = {
 
 class TodoList extends Component {
 
-  create = (text) => {
-    this.props.store.dispatch({type: 'ADD_TODO', text: text})
-    this.forceUpdate();
-  }
-
-  update = (id, text) => {
-    this.props.store.dispatch({type: 'UPDATE_TODO', id: id, text: text})
-    this.forceUpdate();
-  }
-
-  deleteTodo = (id) => {
-    this.props.store.dispatch({type: "DELETE_TODO", id: id});
-    this.forceUpdate();
-  }
-
-  markCompleted = (id) => {
-    this.props.store.dispatch({type: 'COMPLETE_TODO', id: id});
-    this.forceUpdate();
-  }
-
-  markAllCompleted = () => {
-    this.props.store.dispatch({type: 'COMPLETE_ALL'});
-    this.forceUpdate();
-  }
-
   get todos(){
     return this.props.store.getState().todos;
   }
@@ -56,18 +31,18 @@ class TodoList extends Component {
               <div className="col-md-6">
                   <div className="todolist not-done">
                   <h1>Todos</h1>
-                    <TodoInput save={this.create} />
+                    <TodoInput save={this.props.callbacks.create} />
 
 
                           <button id="checkAll"
-                            onClick={this.markAllCompleted}
+                            onClick={this.props.callbacks.markAllCompleted}
                             className="btn btn-success">Mark all as done</button>
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
                           { this.incompleteTodos.map(todo =>
-                            <Todo key={todo.id} deleteTodo={this.deleteTodo}
-                              update={this.update}
-                              markCompleted={this.markCompleted}
+                            <Todo key={todo.id} deleteTodo={this.props.callbacks.deleteTodo}
+                              update={this.props.callbacks.update}
+                              markCompleted={this.props.callbacks.markCompleted}
                             todo={todo} />
                             )}
                       </ul>

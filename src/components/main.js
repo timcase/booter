@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Grid, Navbar, Jumbotron, Button } from 'react-bootstrap';
-import TodoList from './components/todo_list';
+import TodoList from './todo_list';
 
-class App extends Component {
+class Main extends Component {
+
   render() {
     return (
       <div>
@@ -30,10 +31,10 @@ class App extends Component {
             </p>
           </Grid>
         </Jumbotron>
-        <TodoList store={this.props.store} />
+        <TodoList callbacks={this.props.callbacks} store={this.props.store} />
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default Main;

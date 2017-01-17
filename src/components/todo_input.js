@@ -21,7 +21,7 @@ class TodoInput extends Component {
   handleSubmit = (e) => {
     const text = e.target.value.trim()
     if (e.which === 13) {
-      this.props.save(text);
+      this.props.save({text: text});
       this.setState({ text: '' })
     }
   }

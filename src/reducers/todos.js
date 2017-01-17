@@ -1,3 +1,4 @@
+import * as actions from '../constants/action_types'
 const initialState = [
   {
     text: 'Use Redux',
@@ -19,34 +20,35 @@ const initialState = [
 ]
 
 export default function todos( state = initialState, action){
+  console.log(action.payload);
 
     switch (action.type) {
-      case 'ADD_TODO':
+      case actions.ADD_TODO:
         return [
           {
             id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
             completed: false,
-            text: action.text
+            text: action.payload.text
           },
           ...state
         ]
-      case 'UPDATE_TODO':
+      case actions.UPDATE_TODO:
         return state.map(todo =>
-          todo.id === action.id ?
-            { ...todo, text: action.text } :
+          todo.id === action.payload.id ?
+            { ...todo, text: action.payload.text } :
             todo
         )
-      case 'DELETE_TODO':
+      case actions.DELETE_TODO:
         return state.filter(todo =>
-          todo.id !== action.id
+          todo.id !== action.payload.id
         )
-      case 'COMPLETE_TODO':
+      case actions.COMPLETE_TODO:
         return state.map(todo =>
-          todo.id === action.id ?
+          todo.id === action.payload.id ?
             { ...todo, completed: !todo.completed } :
             todo
         )
-      case 'COMPLETE_ALL':
+      case actions.COMPLETE_ALL:
         const areAllMarked = state.every(todo => todo.completed)
         return state.map(todo => ({
           ...todo,

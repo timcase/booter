@@ -16,18 +16,18 @@ class Todo extends Component {
   }
 
   update = (text) => {
-    this.props.update(this.props.todo.id, text);
+    this.props.updateTodo(Object.assign({}, {id: this.props.todo.id}, text));
     this.setState({
       editing: false
     });
   }
 
   handleDeleteClick = () => {
-    this.props.deleteTodo(this.props.todo.id);
+    this.props.deleteTodo({id: this.props.todo.id});
   }
 
   handleCompletedClick = () => {
-    this.props.markCompleted(this.props.todo.id);
+    this.props.markCompleted({id: this.props.todo.id});
   }
 
   render() {

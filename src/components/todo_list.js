@@ -31,9 +31,7 @@ class TodoList extends Component {
               <div className="col-md-6">
                   <div className="todolist not-done">
                   <h1>Todos</h1>
-                    <TodoInput save={this.props.callbacks.create} />
-
-
+                          <TodoInput save={this.props.callbacks.addTodo} />
                           <button id="checkAll"
                             onClick={this.props.callbacks.markAllCompleted}
                             className="btn btn-success">Mark all as done</button>
@@ -41,7 +39,7 @@ class TodoList extends Component {
                           <ul id="sortable" className="list-unstyled">
                           { this.incompleteTodos.map(todo =>
                             <Todo key={todo.id} deleteTodo={this.props.callbacks.deleteTodo}
-                              update={this.props.callbacks.update}
+                              updateTodo={this.props.callbacks.updateTodo}
                               markCompleted={this.props.callbacks.markCompleted}
                             todo={todo} />
                             )}

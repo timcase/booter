@@ -1,17 +1,8 @@
 import * as types from '../constants/action_types'
+import { createAction } from 'redux-actions';
 
-function makeActionCreator(type, ...argNames) {
-  return function(...args) {
-    let action = { type }
-    argNames.forEach((arg, index) => {
-      action[argNames[index]] = args[index]
-    })
-    return action
-  }
-}
-
-export const addTodo = makeActionCreator(types.ADD_TODO, 'todo');
-export const updateTodo = makeActionCreator(types.UPDATE_TODO, 'id', 'todo');
-export const deleteTodo = makeActionCreator(types.DELETE_TODO, 'id');
-export const markCompleted = makeActionCreator(types.COMPLETED_TODO, 'id');
-export const markAllCompleted = makeActionCreaator(types.COMPLETE_ALL);
+export const addTodo = createAction(types.ADD_TODO);
+export const updateTodo = createAction(types.UPDATE_TODO);
+export const deleteTodo = createAction(types.DELETE_TODO);
+export const markCompleted = createAction(types.COMPLETE_TODO);
+export const markAllCompleted = createAction(types.COMPLETE_ALL);

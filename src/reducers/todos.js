@@ -42,13 +42,13 @@ export default function todos( state = initialState, action){
         return state.filter(todo =>
           todo.id !== action.payload.id
         )
-      case actions.COMPLETE_TODO:
+      case actions.MARK_COMPLETED:
         return state.map(todo =>
           todo.id === action.payload.id ?
             { ...todo, completed: !todo.completed } :
             todo
         )
-      case actions.COMPLETE_ALL:
+      case actions.MARK_ALL_COMPLETED:
         const areAllMarked = state.every(todo => todo.completed)
         return state.map(todo => ({
           ...todo,

@@ -1,36 +1,17 @@
 import * as types from '../constants/action_types'
 
-export function addTodo(text) {
-  return {
-    type: types.ADD_TODO,
-    text: text
+function makeActionCreator(type, ...argNames) {
+  return function(...args) {
+    let action = { type }
+    argNames.forEach((arg, index) => {
+      action[argNames[index]] = args[index]
+    })
+    return action
   }
 }
 
-export function updateTodo(id, text) {
-  return {
-    type: types.UPDATE_TODO,
-    id: id,
-    text: text
-  }
-}
-
-export function deleteTodo(id) {
-  return {
-    type: types.DELETE_TODO,
-    id: id
-  }
-}
-
-export function markCompleted(id) {
-  return {
-    type: types.COMPLETE_TODO,
-    id: id
-  }
-}
-
-export function markAllCompleted() {
-  return {
-    type: types.COMPLETE_ALL
-  }
-}
+export const addTodo = makeActionCreator(types.ADD_TODO, 'todo');
+export const updateTodo = makeActionCreator(types.UPDATE_TODO, 'id', 'todo');
+export const deleteTodo = makeActionCreator(types.DELETE_TODO, 'id');
+export const markCompleted = makeActionCreator(types.COMPLETED_TODO, 'id');
+export const markAllCompleted = makeActionCreaator(types.COMPLETE_ALL);

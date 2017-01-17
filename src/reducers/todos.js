@@ -1,3 +1,4 @@
+import * as types from '../constants/action_types'
 const initialState = [
   {
     text: 'Use Redux',
@@ -21,7 +22,7 @@ const initialState = [
 export default function todos( state = initialState, action){
 
     switch (action.type) {
-      case 'ADD_TODO':
+      case types.ADD_TODO:
         return [
           {
             id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
@@ -30,23 +31,23 @@ export default function todos( state = initialState, action){
           },
           ...state
         ]
-      case 'UPDATE_TODO':
+      case types.UPDATE_TODO:
         return state.map(todo =>
           todo.id === action.id ?
             { ...todo, text: action.text } :
             todo
         )
-      case 'DELETE_TODO':
+      case types.DELETE_TODO:
         return state.filter(todo =>
           todo.id !== action.id
         )
-      case 'COMPLETE_TODO':
+      case types.COMPLETE_TODO:
         return state.map(todo =>
           todo.id === action.id ?
             { ...todo, completed: !todo.completed } :
             todo
         )
-      case 'COMPLETE_ALL':
+      case types.COMPLETE_ALL:
         const areAllMarked = state.every(todo => todo.completed)
         return state.map(todo => ({
           ...todo,

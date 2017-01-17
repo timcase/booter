@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
 import Main from '../components/main';
 import { connect } from 'react-redux';
+import * as types from '../constants/action_types'
+
 
 const mapDispatchToProps = (dispatch) => {
   return {
     callbacks: {
       create: (text) => {
-        dispatch({type: 'ADD_TODO', text: text});
+        dispatch({type: types.ADD_TODO, text: text});
       },
       update: (id, text) => {
-        dispatch({type: 'UPDATE_TODO', id: id, text: text})
+        dispatch({type: types.UPDATE_TODO, id: id, text: text})
       },
       deleteTodo: (id) => {
-        dispatch({type: "DELETE_TODO", id: id});
+        dispatch({type: types.DELETE_TODO, id: id});
       },
       markCompleted: (id) => {
-        dispatch({type: 'COMPLETE_TODO', id: id});
+        dispatch({type: types.COMPLETE_TODO, id: id});
       },
       markAllCompleted: () => {
-        dispatch({type: 'COMPLETE_ALL'});
+        dispatch({type: types.COMPLETE_ALL});
       }
     }
   }

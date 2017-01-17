@@ -10,8 +10,8 @@ function makeActionCreator(type, ...argNames) {
   }
 }
 
-export const addTodo = makeActionCreator(types.ADD_TODO, 'todo');
-export const updateTodo = makeActionCreator(types.UPDATE_TODO, 'id', 'todo');
+export const addTodo = makeActionCreator(types.ADD_TODO, 'text');
+export const updateTodo = makeActionCreator(types.UPDATE_TODO, 'id', 'text');
 export const deleteTodo = makeActionCreator(types.DELETE_TODO, 'id');
-export const markCompleted = makeActionCreator(types.COMPLETED_TODO, 'id');
-export const markAllCompleted = makeActionCreaator(types.COMPLETE_ALL);
+export const markCompleted = makeActionCreator(types.COMPLETE_TODO, 'id');
+export const markAllCompleted = makeActionCreator(types.COMPLETE_ALL);

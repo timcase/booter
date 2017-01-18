@@ -1,4 +1,5 @@
-import * as actions from '../constants/action_types'
+import { handleActions } from 'redux-actions';
+
 const initialState = [
   {
     text: 'Use Redux',
@@ -19,43 +20,40 @@ const initialState = [
   }
 ]
 
-export default function todos( state = initialState, action){
-  console.log(action.payload);
+export default handleActions({
 
-    switch (action.type) {
-      case actions.ADD_TODO:
-        return [
-          {
-            id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
-            completed: false,
-            text: action.payload.text
-          },
-          ...state
-        ]
-      case actions.UPDATE_TODO:
-        return state.map(todo =>
-          todo.id === action.payload.id ?
-            { ...todo, text: action.payload.text } :
-            todo
-        )
-      case actions.DELETE_TODO:
-        return state.filter(todo =>
-          todo.id !== action.payload.id
-        )
-      case actions.MARK_COMPLETED:
-        return state.map(todo =>
-          todo.id === action.payload.id ?
-            { ...todo, completed: !todo.completed } :
-            todo
-        )
-      case actions.MARK_ALL_COMPLETED:
-        const areAllMarked = state.every(todo => todo.completed)
-        return state.map(todo => ({
-          ...todo,
-          completed: !areAllMarked
-        }))
-      default:
-        return state;
-    }
+  ADD_TODO: (state, action) => ([
+    {
+      id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
+      completed: false,
+      text: action.payload.text
+    },
+    ...state
+  ]),
+  UPDATE_TODO: (state, action) => (
+      state.map(todo =>
+      todo.id === action.payload.id ?
+        { ...todo, text: action.payload.text } :
+        todo
+    )
+  ),
+  DELETE_TODO: (state, action) => (
+      state.filter(todo =>
+        todo.id !== action.payload.id
+      )
+  ),
+  MARK_COMPLETED: (state, action) => (
+    state.map(todo =>
+      todo.id === action.payload.id ?
+        { ...todo, completed: !todo.completed } :
+        todo
+    )
+  ),
+  MARK_ALL_COMPLETED: (state, action) => (
+     state.map(todo => ({
+      ...todo,
+       completed: !state.every(todo => todo.completed)
+    }))
+  )
 
-}
+}, initialState )

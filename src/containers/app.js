@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as TodoActions from '../actions';
 
-console.log(TodoActions);
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(TodoActions, dispatch)
 })

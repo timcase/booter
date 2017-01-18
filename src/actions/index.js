@@ -1,4 +1,4 @@
-import * as types from '../constants/action_types'
+import * as actions from '../constants/action_types'
 import { createActions } from 'redux-actions';
 
 export const {
@@ -7,8 +7,8 @@ export const {
   deleteTodo,
   markCompleted,
   markAllCompleted} = createActions(
-    types.ADD_TODO,
-    types.UPDATE_TODO,
-    types.DELETE_TODO,
-    types.MARK_COMPLETED,
-    types.MARK_ALL_COMPLETED);
+    actions.ADD_TODO,
+    actions.UPDATE_TODO,
+    actions.DELETE_TODO,
+    actions.MARK_COMPLETED,
+    actions.MARK_ALL_COMPLETED);

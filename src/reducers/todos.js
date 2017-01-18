@@ -22,7 +22,7 @@ const initialState = [
 
 export default handleActions({
 
-  ADD_TODO: (state, action) => ([
+  TODO_ADD: (state, action) => ([
     {
       id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
       completed: false,
@@ -30,26 +30,26 @@ export default handleActions({
     },
     ...state
   ]),
-  UPDATE_TODO: (state, action) => (
+  TODO_UPDATE: (state, action) => (
       state.map(todo =>
       todo.id === action.payload.id ?
         { ...todo, text: action.payload.text } :
         todo
     )
   ),
-  DELETE_TODO: (state, action) => (
+  TODO_DELETE: (state, action) => (
       state.filter(todo =>
         todo.id !== action.payload.id
       )
   ),
-  MARK_COMPLETED: (state, action) => (
+  TODO_MARK_COMPLETED: (state, action) => (
     state.map(todo =>
       todo.id === action.payload.id ?
         { ...todo, completed: !todo.completed } :
         todo
     )
   ),
-  MARK_ALL_COMPLETED: (state, action) => (
+  TODO_MARK_ALL_COMPLETED: (state, action) => (
      state.map(todo => ({
       ...todo,
        completed: !state.every(todo => todo.completed)

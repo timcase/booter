@@ -16,7 +16,7 @@ class App extends Component {
 
   render() {
     return (
-      <Main todos={this.props.todos} callbacks={this.props.actions} />
+      <Main todos={this.props.todos} actions={this.props.actions} />
     );
   }
 }

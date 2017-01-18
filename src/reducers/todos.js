@@ -1,4 +1,7 @@
-import * as types from '../constants/action_types'
+import { createReducer } from 'redux-act';
+import {addTodo, updateTodo, deleteTodo, markAsCompletedTodo,
+  markAllAsCompletedTodo} from '../actions';
+
 const initialState = [
   {
     text: 'Use Redux',
@@ -19,41 +22,42 @@ const initialState = [
   }
 ]
 
-export default function todos( state = initialState, action){
-    switch (action.type) {
-      case types.ADD_TODO:
+export default createReducer({
+  [addTodo]: (state, payload) => {
         return [
           {
             id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
             completed: false,
-            text: action.text
+            text: payload.text
           },
           ...state
         ]
-      case types.UPDATE_TODO:
+  },
+  [updateTodo]: (state, payload) => {
         return state.map(todo =>
-          todo.id === action.id ?
-            { ...todo, text: action.text } :
+          todo.id === payload.id ?
+            { ...todo, text: payload.text } :
             todo
         )
-      case types.DELETE_TODO:
-        return state.filter(todo =>
-          todo.id !== action.id
-        )
-      case types.COMPLETE_TODO:
-        return state.map(todo =>
-          todo.id === action.id ?
-            { ...todo, completed: !todo.completed } :
-            todo
-        )
-      case types.COMPLETE_ALL:
-        const areAllMarked = state.every(todo => todo.completed)
-        return state.map(todo => ({
-          ...todo,
-          completed: !areAllMarked
-        }))
-      default:
-        return state;
-    }
+  },
+  [deleteTodo]: (state, payload) => {
+    return state.filter(todo =>
+      todo.id !== payload.id
+    )
+  },
+  [markAsCompletedTodo]: (state, payload) => {
+    return state.map(todo =>
+      todo.id === payload.id ?
+        { ...todo, completed: !todo.completed } :
+        todo
+    )
+  },
+  [markAllAsCompletedTodo]: (state) => {
+    const areAllMarked = state.every(todo => todo.completed)
+    return state.map(todo => ({
+      ...todo,
+      completed: !areAllMarked
+    }))
+  }
 
-}
+}, initialState);

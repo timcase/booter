@@ -31,16 +31,16 @@ class TodoList extends Component {
               <div className="col-md-6">
                   <div className="todolist not-done">
                   <h1>Todos</h1>
-                    <TodoInput save={this.props.callbacks.addTodo} />
+                    <TodoInput save={this.props.actions.addTodo} />
                           <button id="checkAll"
-                            onClick={this.props.callbacks.markAllCompleted}
+                            onClick={this.props.actions.markAllAsCompletedTodo}
                             className="btn btn-success">Mark all as done</button>
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
                           { this.incompleteTodos.map(todo =>
-                            <Todo key={todo.id} deleteTodo={this.props.callbacks.deleteTodo}
-                              update={this.props.callbacks.updateTodo}
-                              markCompleted={this.props.callbacks.markCompleted}
+                            <Todo key={todo.id} deleteTodo={this.props.actions.deleteTodo}
+                              update={this.props.actions.updateTodo}
+                              markCompleted={this.props.actions.markAsCompletedTodo}
                             todo={todo} />
                             )}
                       </ul>

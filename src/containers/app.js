@@ -9,7 +9,8 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mapStateToProps = (state) => {
-  return { todos: state.todos.todos };
+  return { todos: state.todos.todos, isLoading: state.todos.isLoading,
+    hasFailure: state.todos.hasFailure };
 };
 
 class App extends Component {
@@ -19,7 +20,10 @@ class App extends Component {
 
   render() {
     return (
-      <Main todos={this.props.todos} actions={this.props.actions} />
+      <Main todos={this.props.todos}
+        isLoading={this.props.isLoading}
+        hasFailure={this.props.hasFailure}
+      actions={this.props.actions} />
     );
   }
 }

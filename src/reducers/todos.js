@@ -2,24 +2,24 @@ import * as actionTypes from '../constants/action_types';
 const initialState = {
   todos: [],
   isLoading: false,
-  hasError: false
+  hasFailure: false
 }
 
 
 export default function todos( state = initialState, action){
 
     switch (action.type) {
-      case actionTypes.TODOS_SEND_GET_REQUEST:
+      case actionTypes.TODOS_SEND_GET:
         return {
           ...state, isLoading: action.isLoading
         }
-      case actionTypes.TODOS_SEND_GET_REQUEST_SUCCESSFUL:
+      case actionTypes.TODOS_SEND_GET_IS_SUCCESS:
         return {
           ...state,  todos: action.todos
         }
-      case actionTypes.TODOS_SEND_GET_REQUEST_ERROR:
+      case actionTypes.TODOS_SEND_GET_IS_FAILURE:
         return {
-          ...state, hasError: action.hasError
+          ...state, hasFailure: action.hasFailure
         }
       default:
         return state;

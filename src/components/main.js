@@ -3,8 +3,38 @@ import { Grid, Navbar, Jumbotron, Button } from 'react-bootstrap';
 import TodoList from './todo_list';
 
 class Main extends Component {
+  get loadAlert(){
+      if (this.props.isLoading) {
+        return (
+          <div className="container">
+            <div className="alert alert-warning fade in">
+              Loading todos...
+            </div>
+          </div>
+        );
+      }
+      else{
+        return null;
+      }
+  }
+
+  get errorAlert(){
+      if (this.props.hasFailure) {
+        return (
+          <div className="container">
+            <div className="alert alert-danger fade in">
+              There was an error loading todos
+            </div>
+          </div>
+        );
+      }
+      else{
+        return null;
+      }
+  }
 
   render() {
+    console.log(this.props);
     return (
       <div>
         <Navbar inverse fixedTop>
@@ -31,14 +61,8 @@ class Main extends Component {
             </p>
           </Grid>
         </Jumbotron>
-        <div className="container">
-          <div className="alert alert-warning fade in">
-            Loading todos...
-          </div>
-          <div className="alert alert-danger fade in">
-            There was an error loading todos
-          </div>
-        </div>
+        {this.loadAlert}
+        {this.errorAlert}
         <TodoList actions={this.props.actions} todos={this.props.todos} />
       </div>
     )

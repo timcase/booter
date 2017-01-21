@@ -1,26 +1,45 @@
-import { createAction } from 'redux-act';
+import * as actionTypes from '../constants/action_types';
 
-export const addTodo = createAction("add a todo");
-export const updateTodo = createAction("update a todo");
-export const deleteTodo = createAction("delete a todo");
-export const markAsCompletedTodo = createAction("mark a todo as completed");
-export const markAllAsCompletedTodo = createAction("mark all todos as completed");
+export const sendGetRequestTodos = (isLoading) => {
+  return {
+    type: actionTypes.TODOS_SEND_GET_REQUEST,
+    isLoading: isLoading
+  };
+}
 
+export const sendGetRequestSuccessfulTodos = (todos) => {
+  return {
+    type: actionTypes.TODOS_SEND_GET_REQUEST_SUCCESSFUL,
+    todos: todos
+  };
+}
 
-// import * as types from '../constants/action_types'
+export const sendGetRequestErrorTodos = (hasError) => {
+  return {
+    type: actionTypes.TODOS_SEND_GET_REQUEST_ERROR,
+    hasError: hasError
+  };
+}
 
-// function makeActionCreator(type, ...argNames) {
-//   return function(...args) {
-//     let action = { type }
-//     argNames.forEach((arg, index) => {
-//       action[argNames[index]] = args[index]
-//     })
-//     return action
-//   }
-// }
+export const getTodos = () => {
+    const url = 'http://5883b3c16d8e0d1200b7063a.mockapi.io/todos';
+    return (dispatch) => {
+        dispatch(sendGetRequestTodos(true));
 
-// export const addTodo = makeActionCreator(types.ADD_TODO, 'text');
-// export const updateTodo = makeActionCreator(types.UPDATE_TODO, 'id', 'text');
-// export const deleteTodo = makeActionCreator(types.DELETE_TODO, 'id');
-// export const markCompleted = makeActionCreator(types.COMPLETE_TODO, 'id');
-// export const markAllCompleted = makeActionCreator(types.COMPLETE_ALL);
+        fetch(url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+
+                dispatch(sendGetRequestTodos(false));
+
+                return response;
+            })
+            .then((response) => response.json())
+        .then((todos) => {
+          console.log(todos);
+          dispatch(sendGetRequestSuccessfulTodos(todos))})
+            .catch(() => dispatch(sendGetRequestErrorTodos(true)));
+    };
+}

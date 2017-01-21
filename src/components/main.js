@@ -31,6 +31,14 @@ class Main extends Component {
             </p>
           </Grid>
         </Jumbotron>
+        <div className="container">
+          <div className="alert alert-warning fade in">
+            Loading todos...
+          </div>
+          <div className="alert alert-danger fade in">
+            There was an error loading todos
+          </div>
+        </div>
         <TodoList actions={this.props.actions} todos={this.props.todos} />
       </div>
     )

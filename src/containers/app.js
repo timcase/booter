@@ -9,10 +9,13 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mapStateToProps = (state) => {
-  return { todos: state.todos };
+  return { todos: state.todos.todos };
 };
 
 class App extends Component {
+  componentDidMount() {
+    this.props.actions.getTodos();
+  }
 
   render() {
     return (

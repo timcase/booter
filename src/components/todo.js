@@ -15,8 +15,10 @@ class Todo extends Component {
     });
   }
 
-  update = (text) => {
-    this.props.update(this.props.todo.id, text);
+  update = (argTodo) => {
+    let todo = this.props.todo;
+    todo.text = argTodo.text;
+    this.props.update(todo);
     this.setState({
       editing: false
     });
@@ -27,7 +29,9 @@ class Todo extends Component {
   }
 
   handleCompletedClick = () => {
-    this.props.markCompleted(this.props.todo.id);
+    let todo = this.props.todo;
+    todo.completed = true
+    this.props.update(todo);
   }
 
   render() {

@@ -25,7 +25,7 @@ class Todo extends Component {
   }
 
   handleDeleteClick = () => {
-    this.props.deleteTodo(this.props.todo.id);
+    this.props.deleteTodo(this.props.todo);
   }
 
   handleCompletedClick = () => {

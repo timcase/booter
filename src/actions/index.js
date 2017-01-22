@@ -148,3 +148,48 @@ export const updateTodo = (todo) => {
             .catch(() => dispatch(sendUpdateIsFailureTodo(true)));
     };
 }
+
+export const sendDeleteTodo = (isRequesting) => {
+  return {
+    type: actionTypes.TODO_SEND_DELETE,
+    isRequesting: isRequesting
+  }
+}
+
+export const sendDeleteIsSuccessTodo = (todo) => {
+  return {
+    type: actionTypes.TODO_SEND_DELETE_IS_SUCCESS,
+    todo: todo
+  }
+}
+
+export const sendDeleteIsFailureTodo = (hasFailure) => {
+  return {
+    type: actionTypes.TODO_SEND_DELETE_IS_FAILURE,
+    hasFailure: hasFailure
+  };
+}
+
+export const deleteTodo = (todo) => {
+    const url = 'http://5883b3c16d8e0d1200b7063a.mockapi.io/todos/' + todo.id;
+    return (dispatch) => {
+        dispatch(sendDeleteTodo(true));
+
+      fetch(url,{
+        method: 'DELETE'
+      })
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+
+                dispatch(sendDeleteTodo(false));
+
+                return response;
+            })
+            .then((response) => response.json())
+        .then((todo) => {
+          dispatch(sendDeleteIsSuccessTodo(todo))})
+            .catch(() => dispatch(sendDeleteIsFailureTodo(true)));
+    };
+}

@@ -47,6 +47,18 @@ export default function todos( state = initialState, action){
         return {
           ...state, hasFailure: action.hasFailure
         }
+      case actionTypes.TODO_SEND_DELETE:
+        return {
+          ...state, isRequesting: action.isLoading
+        }
+      case actionTypes.TODO_SEND_DELETE_IS_SUCCESS:
+        return {
+          ...state, todos: state.todos.filter(todo => todo.id !== action.todo.id)
+        }
+      case actionTypes.TODO_SEND_DELETE_IS_FAILURE:
+        return {
+          ...state, hasFailure: action.hasFailure
+        }
       default:
         return state;
     }

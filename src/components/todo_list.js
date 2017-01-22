@@ -31,9 +31,6 @@ class TodoList extends Component {
                   <div className="todolist not-done">
                   <h1>Todos</h1>
                     <TodoInput save={this.props.actions.createTodo} />
-                          <button id="checkAll"
-                            onClick={this.props.actions.markAllAsCompletedTodo}
-                            className="btn btn-success">Mark all as done</button>
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
                           { this.incompleteTodos.map(todo =>

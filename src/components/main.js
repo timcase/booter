@@ -4,7 +4,7 @@ import TodoList from './todo_list';
 
 class Main extends Component {
   get loadAlert(){
-      if (this.props.isLoading) {
+      if (this.props.isRequesting) {
         return (
           <div className="container">
             <div className="alert alert-warning fade in">
@@ -34,7 +34,6 @@ class Main extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div>
         <Navbar inverse fixedTop>

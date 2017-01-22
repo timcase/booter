@@ -9,7 +9,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mapStateToProps = (state) => {
-  return { todos: state.todos.todos, isLoading: state.todos.isLoading,
+  return { todos: state.todos.todos, isRequesting: state.todos.isRequesting,
     hasFailure: state.todos.hasFailure };
 };
 
@@ -21,7 +21,7 @@ class App extends Component {
   render() {
     return (
       <Main todos={this.props.todos}
-        isLoading={this.props.isLoading}
+        isRequesting={this.props.isRequesting}
         hasFailure={this.props.hasFailure}
       actions={this.props.actions} />
     );

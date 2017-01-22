@@ -1,9 +1,9 @@
 import * as actionTypes from '../constants/action_types';
 
-export const sendGetTodos = (isLoading) => {
+export const sendGetTodos = (isRequesting) => {
   return {
     type: actionTypes.TODOS_SEND_GET,
-    isLoading: isLoading
+    isRequesting: isRequesting
   };
 }
 
@@ -40,5 +40,57 @@ export const getTodos = () => {
         .then((todos) => {
           dispatch(sendGetIsSuccessTodos(todos))})
             .catch(() => dispatch(sendGetIsFailureTodos(true)));
+    };
+}
+
+export const sendCreateTodo = (isRequesting) => {
+  return {
+    type: actionTypes.TODO_SEND_CREATE,
+    isRequesting: isRequesting
+  };
+}
+
+export const sendCreateIsSuccessTodo = (todo) => {
+  return {
+    type: actionTypes.TODO_SEND_CREATE_IS_SUCCESS,
+    todo: todo
+  }
+}
+
+export const sendCreateIsFailureTodo = (hasFailure) => {
+  return {
+    type: actionTypes.TODO_SEND_CREATE_IS_FAILURE,
+    hasFailure: hasFailure
+  };
+}
+
+export const createTodo = (todo) => {
+    const url = 'http://5883b3c16d8e0d1200b7063a.mockapi.io/todos';
+    return (dispatch) => {
+        dispatch(sendCreateTodo(true));
+
+      fetch(url,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          text: todo.text,
+          completed: false
+        })
+      })
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+
+                dispatch(sendCreateTodo(false));
+
+                return response;
+            })
+            .then((response) => response.json())
+        .then((todo) => {
+          dispatch(sendCreateIsSuccessTodo(todo))})
+            .catch(() => dispatch(sendCreateIsFailureTodo(true)));
     };
 }

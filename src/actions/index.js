@@ -22,7 +22,7 @@ export const sendGetIsFailureTodos = (hasFailure) => {
 }
 
 export const getTodos = () => {
-    const url = 'http://5883b3c16d8e0d1200b7063a.mockapi.io/todos';
+    const url = 'http://localhost:3001/todos';
     return (dispatch) => {
         dispatch(sendGetTodos(true));
 
@@ -51,9 +51,16 @@ export const sendCreateTodo = (isRequesting) => {
   };
 }
 
-export const sendCreateIsSuccessTodo = (todo) => {
+export const addTodo = (todo) => {
   return {
-    type: actionTypes.TODO_SEND_CREATE_IS_SUCCESS,
+    type: actionTypes.TODO_ADD,
+    todo: todo
+  }
+}
+
+export const modifyTodo = (todo) => {
+  return {
+    type: actionTypes.TODO_MODIFY,
     todo: todo
   }
 }
@@ -66,9 +73,10 @@ export const sendCreateIsFailureTodo = (hasFailure) => {
 }
 
 export const createTodo = (todo) => {
-    const url = 'http://5883b3c16d8e0d1200b7063a.mockapi.io/todos';
+    const url = 'http://localhost:3001/todos';
     return (dispatch) => {
         dispatch(sendCreateTodo(true));
+        dispatch(addTodo(todo));
 
       fetch(url,{
         method: 'POST',
@@ -90,8 +98,8 @@ export const createTodo = (todo) => {
                 return response;
             })
             .then((response) => response.json())
-        .then((todo) => {
-          dispatch(sendCreateIsSuccessTodo(todo))})
+       .then((todo) => {
+          dispatch(modifyTodo(todo))})
             .catch(() => dispatch(sendCreateIsFailureTodo(true)));
     };
 }
@@ -103,12 +111,6 @@ export const sendUpdateTodo = (isRequesting) => {
   };
 }
 
-export const sendUpdateIsSuccessTodo = (todo) => {
-  return {
-    type: actionTypes.TODO_SEND_UPDATE_IS_SUCCESS,
-    todo: todo
-  }
-}
 
 export const sendUpdateIsFailureTodo = (hasFailure) => {
   return {
@@ -118,9 +120,10 @@ export const sendUpdateIsFailureTodo = (hasFailure) => {
 }
 
 export const updateTodo = (todo) => {
-    const url = 'http://5883b3c16d8e0d1200b7063a.mockapi.io/todos/' + todo.id;
+  const url = 'http://localhost:3001/todos/' + todo.id;
     return (dispatch) => {
         dispatch(sendUpdateTodo(true));
+        dispatch(modifyTodo(todo));
 
       fetch(url,{
         method: 'PUT',
@@ -144,7 +147,7 @@ export const updateTodo = (todo) => {
             })
             .then((response) => response.json())
         .then((todo) => {
-          dispatch(sendUpdateIsSuccessTodo(todo))})
+          dispatch(modifyTodo(todo))})
             .catch(() => dispatch(sendUpdateIsFailureTodo(true)));
     };
 }
@@ -156,9 +159,9 @@ export const sendDeleteTodo = (isRequesting) => {
   }
 }
 
-export const sendDeleteIsSuccessTodo = (todo) => {
+export const removeTodo = (todo) => {
   return {
-    type: actionTypes.TODO_SEND_DELETE_IS_SUCCESS,
+    type: actionTypes.TODO_REMOVE,
     todo: todo
   }
 }
@@ -171,9 +174,10 @@ export const sendDeleteIsFailureTodo = (hasFailure) => {
 }
 
 export const deleteTodo = (todo) => {
-    const url = 'http://5883b3c16d8e0d1200b7063a.mockapi.io/todos/' + todo.id;
+  const url = 'http://localhost:3001/todos/' + todo.id;
     return (dispatch) => {
         dispatch(sendDeleteTodo(true));
+        dispatch(removeTodo(todo));
 
       fetch(url,{
         method: 'DELETE'
@@ -188,8 +192,9 @@ export const deleteTodo = (todo) => {
                 return response;
             })
             .then((response) => response.json())
-        .then((todo) => {
-          dispatch(sendDeleteIsSuccessTodo(todo))})
+            .then((todo) => {
+              return true;
+            })
             .catch(() => dispatch(sendDeleteIsFailureTodo(true)));
     };
 }

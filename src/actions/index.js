@@ -191,10 +191,6 @@ export const deleteTodo = (todo) => {
 
                 return response;
             })
-            .then((response) => response.json())
-            .then((todo) => {
-              return true;
-            })
             .catch(() => dispatch(sendDeleteIsFailureTodo(true)));
     };
 }

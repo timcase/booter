@@ -19,11 +19,11 @@ class Main extends Component {
   }
 
   get errorAlert(){
-      if (this.props.hasFailure) {
+      if (this.props.error !== '') {
         return (
           <div className="container">
             <div className="alert alert-danger fade in">
-              There was an error loading todos
+              {this.props.error}
             </div>
           </div>
         );

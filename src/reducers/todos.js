@@ -2,7 +2,7 @@ import * as actionTypes from '../constants/action_types';
 const initialState = {
   todos: [],
   isRequesting: false,
-  hasFailure: false
+  error: ''
 }
 
 
@@ -11,15 +11,15 @@ export default function todos( state = initialState, action){
     switch (action.type) {
       case actionTypes.TODOS_SEND_GET:
         return {
-          ...state, isRequesting: action.isLoading
+          ...state, isRequesting: action.isLoading, error: ''
         }
       case actionTypes.TODOS_SEND_GET_IS_SUCCESS:
         return {
-          ...state,  todos: action.todos
+          ...state,  todos: action.todos, error: ''
         }
       case actionTypes.TODOS_SEND_GET_IS_FAILURE:
         return {
-          ...state, hasFailure: action.hasFailure
+          ...state, error: action.error
         }
       case actionTypes.TODO_ADD:
         return {
@@ -32,11 +32,11 @@ export default function todos( state = initialState, action){
           }
       case actionTypes.TODO_SEND_CREATE:
         return {
-          ...state, isRequesting: action.isLoading
+          ...state, isRequesting: action.isLoading, error: ''
         }
       case actionTypes.TODO_SEND_CREATE_IS_FAILURE:
         return {
-          ...state, hasFailure: action.hasFailure
+          ...state, error: action.error
         }
       case actionTypes.TODO_SEND_UPDATE:
         return {

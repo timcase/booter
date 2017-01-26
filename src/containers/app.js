@@ -10,7 +10,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = (state) => {
   return { todos: state.todos.todos, isRequesting: state.todos.isRequesting,
-    hasFailure: state.todos.hasFailure };
+    error: state.todos.error };
 };
 
 class App extends Component {
@@ -22,7 +22,7 @@ class App extends Component {
     return (
       <Main todos={this.props.todos}
         isRequesting={this.props.isRequesting}
-        hasFailure={this.props.hasFailure}
+        error={this.props.error}
       actions={this.props.actions} />
     );
   }

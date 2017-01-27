@@ -40,7 +40,7 @@ export default function todos( state = initialState, action){
         }
       case actionTypes.TODO_SEND_UPDATE:
         return {
-          ...state, isRequesting: action.isLoading
+          ...state, isRequesting: action.isLoading, error: ''
         }
       case actionTypes.TODO_MODIFY:
         return {
@@ -51,7 +51,7 @@ export default function todos( state = initialState, action){
         }
       case actionTypes.TODO_SEND_UPDATE_IS_FAILURE:
         return {
-          ...state, hasFailure: action.hasFailure
+          ...state, error: action.error
         }
       case actionTypes.TODO_SEND_DELETE:
         return {
@@ -63,7 +63,7 @@ export default function todos( state = initialState, action){
         }
       case actionTypes.TODO_SEND_DELETE_IS_FAILURE:
         return {
-          ...state, hasFailure: action.hasFailure
+          ...state, error: action.error
         }
       default:
         return state;

@@ -16,9 +16,10 @@ class Todo extends Component {
   }
 
   update = (argTodo) => {
+    const originalTodo = Object.assign({}, this.props.todo);
     let todo = this.props.todo;
     todo.text = argTodo.text;
-    this.props.update(todo);
+    this.props.update(todo, originalTodo);
     this.setState({
       editing: false
     });
@@ -29,9 +30,10 @@ class Todo extends Component {
   }
 
   handleCompletedClick = () => {
+    const originalTodo = Object.assign({}, this.props.todo);
     let todo = this.props.todo;
     todo.completed = true
-    this.props.update(todo);
+    this.props.update(todo, originalTodo);
   }
 
   render() {

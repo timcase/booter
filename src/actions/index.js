@@ -50,18 +50,18 @@ function parseJSON(response) {
 export const getTodos = () => {
   const url = 'http://localhost:3001/todos';
   return (dispatch) => {
-      dispatch(sendGetTodos(true));
+    dispatch(sendGetTodos(true));
 
-  fetch(url)
-    .then(checkStatus)
-    .then(parseJSON)
-    .then((todos) => {
-      dispatch(sendGetTodos(false));
-      dispatch(sendGetIsSuccessTodos(todos))
-    })
-    .catch((error) => {
-      dispatch(sendGetIsFailureTodos(error));
-    })
+    fetch(url)
+      .then(checkStatus)
+      .then(parseJSON)
+      .then((todos) => {
+        dispatch(sendGetTodos(false));
+        dispatch(sendGetIsSuccessTodos(todos))
+      })
+      .catch((error) => {
+        dispatch(sendGetIsFailureTodos(error));
+      })
   }
 }
 
@@ -109,15 +109,15 @@ export const createTodo = (todo) => {
         completed: false
       })
     })
-    .then(checkStatus)
-    .then(parseJSON)
-    .then((todo) => {
-      dispatch(sendCreateTodo(false));
-      dispatch(modifyTodo(todo))
-    })
-    .catch((error) => {
-      dispatch(sendCreateIsFailureTodo(error));
-    })
+      .then(checkStatus)
+      .then(parseJSON)
+      .then((todo) => {
+        dispatch(sendCreateTodo(false));
+        dispatch(modifyTodo(todo))
+      })
+      .catch((error) => {
+        dispatch(sendCreateIsFailureTodo(error));
+      })
   };
 }
 
@@ -129,44 +129,41 @@ export const sendUpdateTodo = (isRequesting) => {
 }
 
 
-export const sendUpdateIsFailureTodo = (hasFailure) => {
+export const sendUpdateIsFailureTodo = (error) => {
   return {
     type: actionTypes.TODO_SEND_UPDATE_IS_FAILURE,
-    hasFailure: hasFailure
+    error: error.message
   };
 }
 
-export const updateTodo = (todo) => {
+export const updateTodo = (todo, originalTodo) => {
   const url = 'http://localhost:3001/todos/' + todo.id;
-    return (dispatch) => {
-        dispatch(sendUpdateTodo(true));
-        dispatch(modifyTodo(todo));
+  return (dispatch) => {
+    dispatch(sendUpdateTodo(true));
+    dispatch(modifyTodo(todo));
 
-      fetch(url,{
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id: todo.id,
-          text: todo.text,
-          completed: todo.completed
-        })
+    fetch(url,{
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: todo.id,
+        text: todo.text,
+        completed: todo.completed
       })
-            .then((response) => {
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                }
-
-                dispatch(sendUpdateTodo(false));
-
-                return response;
-            })
-            .then((response) => response.json())
-        .then((todo) => {
-          dispatch(modifyTodo(todo))})
-            .catch(() => dispatch(sendUpdateIsFailureTodo(true)));
-    };
+    })
+      .then(checkStatus)
+      .then(parseJSON)
+      .then((todo) => {
+        dispatch(sendUpdateTodo(false));
+        dispatch(modifyTodo(todo));
+      })
+      .catch((error) => {
+        dispatch(sendUpdateIsFailureTodo(error));
+        dispatch(modifyTodo(originalTodo));
+      });
+  };
 }
 
 export const sendDeleteTodo = (isRequesting) => {
@@ -183,31 +180,31 @@ export const removeTodo = (todo) => {
   }
 }
 
-export const sendDeleteIsFailureTodo = (hasFailure) => {
+export const sendDeleteIsFailureTodo = (error) => {
   return {
     type: actionTypes.TODO_SEND_DELETE_IS_FAILURE,
-    hasFailure: hasFailure
+    error: error
   };
 }
 
 export const deleteTodo = (todo) => {
   const url = 'http://localhost:3001/todos/' + todo.id;
-    return (dispatch) => {
-        dispatch(sendDeleteTodo(true));
-        dispatch(removeTodo(todo));
+  return (dispatch) => {
+    dispatch(sendDeleteTodo(true));
+    dispatch(removeTodo(todo));
 
-      fetch(url,{
-        method: 'DELETE'
+    fetch(url,{
+      method: 'DELETE'
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+
+        dispatch(sendDeleteTodo(false));
+
+        return response;
       })
-            .then((response) => {
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                }
-
-                dispatch(sendDeleteTodo(false));
-
-                return response;
-            })
-            .catch(() => dispatch(sendDeleteIsFailureTodo(true)));
-    };
+      .catch(() => dispatch(sendDeleteIsFailureTodo(true)));
+  };
 }

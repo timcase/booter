@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
 
 class App extends Component {
   componentDidMount() {
-    this.props.actions.getTodos();
+    this.props.actions.sendGetTodos();
   }
 
   render() {

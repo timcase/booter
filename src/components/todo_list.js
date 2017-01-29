@@ -30,7 +30,7 @@ class TodoList extends Component {
               <div className="col-md-6">
                   <div className="todolist not-done">
                   <h1>Todos</h1>
-                    <TodoInput save={this.props.actions.createTodo} />
+                    <TodoInput save={this.props.actions.sendCreateTodo} />
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
                           { this.incompleteTodos.map(todo =>

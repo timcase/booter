@@ -1,10 +1,8 @@
 import * as actionTypes from '../constants/action_types';
-import isObject from 'lodash/isObject';
 
-export const sendGetTodos = (isRequesting) => {
+export const sendGetTodos = () => {
   return {
-    type: actionTypes.TODOS_SEND_GET,
-    isRequesting: isRequesting
+    type: actionTypes.TODOS_SEND_GET
   };
 }
 
@@ -22,53 +20,10 @@ export const sendGetIsFailureTodos = (error) => {
   };
 }
 
-function checkStatus(response) {
-  if (response.ok) {
-    return Promise.resolve(response)
-  }
-
-  return response.json().then(json => {
-    const error = new Error(parseJSONerror(json) || response.statusText)
-    return Promise.reject(Object.assign(error, { response }))
-  })
-}
-
-function parseJSONerror(json){
-  if (isObject(json) === false){
-    return null;
-  }
-
-  return Object.keys(json).map((key) => {
-    return key + ' ' + json[key].join(', ')
-  }).join(" ");
-}
-
-function parseJSON(response) {
-  return response.json()
-}
-
-export const getTodos = () => {
-  const url = 'http://localhost:3001/todos';
-  return (dispatch) => {
-    dispatch(sendGetTodos(true));
-
-    fetch(url)
-      .then(checkStatus)
-      .then(parseJSON)
-      .then((todos) => {
-        dispatch(sendGetTodos(false));
-        dispatch(sendGetIsSuccessTodos(todos))
-      })
-      .catch((error) => {
-        dispatch(sendGetIsFailureTodos(error));
-      })
-  }
-}
-
-export const sendCreateTodo = (isRequesting) => {
+export const sendCreateTodo = (todo) => {
   return {
     type: actionTypes.TODO_SEND_CREATE,
-    isRequesting: isRequesting
+    todo: todo
   };
 }
 
@@ -79,10 +34,11 @@ export const addTodo = (todo) => {
   }
 }
 
-export const modifyTodo = (todo) => {
+export const modifyTodo = (id, todo) => {
   return {
     type: actionTypes.TODO_MODIFY,
-    todo: todo
+    todo: todo,
+    id: id
   }
 }
 
@@ -93,31 +49,9 @@ export const sendCreateIsFailureTodo = (error) => {
   };
 }
 
-export const createTodo = (todo) => {
-  const url = 'http://localhost:3001/todos';
-  return (dispatch) => {
-    dispatch(sendCreateTodo(true));
-    dispatch(addTodo(todo));
-
-    fetch(url,{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        text: todo.text,
-        completed: false
-      })
-    })
-      .then(checkStatus)
-      .then(parseJSON)
-      .then((todo) => {
-        dispatch(sendCreateTodo(false));
-        dispatch(modifyTodo(todo))
-      })
-      .catch((error) => {
-        dispatch(sendCreateIsFailureTodo(error));
-      })
+export const sendCreateIsSuccessTodo = () => {
+  return {
+    type: actionTypes.TODO_SEND_CREATE_IS_SUCCESS,
   };
 }
 
@@ -136,35 +70,35 @@ export const sendUpdateIsFailureTodo = (error) => {
   };
 }
 
-export const updateTodo = (todo, originalTodo) => {
-  const url = 'http://localhost:3001/todos/' + todo.id;
-  return (dispatch) => {
-    dispatch(sendUpdateTodo(true));
-    dispatch(modifyTodo(todo));
+// export const updateTodo = (todo, originalTodo) => {
+//   const url = 'http://localhost:3001/todos/' + todo.id;
+//   return (dispatch) => {
+//     dispatch(sendUpdateTodo(true));
+//     dispatch(modifyTodo(todo));
 
-    fetch(url,{
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id: todo.id,
-        text: todo.text,
-        completed: todo.completed
-      })
-    })
-      .then(checkStatus)
-      .then(parseJSON)
-      .then((todo) => {
-        dispatch(sendUpdateTodo(false));
-        dispatch(modifyTodo(todo));
-      })
-      .catch((error) => {
-        dispatch(sendUpdateIsFailureTodo(error));
-        dispatch(modifyTodo(originalTodo));
-      });
-  };
-}
+//     fetch(url,{
+//       method: 'PUT',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify({
+//         id: todo.id,
+//         text: todo.text,
+//         completed: todo.completed
+//       })
+//     })
+//       .then(checkStatus)
+//       .then(parseJSON)
+//       .then((todo) => {
+//         dispatch(sendUpdateTodo(false));
+//         dispatch(modifyTodo(todo));
+//       })
+//       .catch((error) => {
+//         dispatch(sendUpdateIsFailureTodo(error));
+//         dispatch(modifyTodo(originalTodo));
+//       });
+//   };
+// }
 
 export const sendDeleteTodo = (isRequesting) => {
   return {
@@ -187,24 +121,24 @@ export const sendDeleteIsFailureTodo = (error) => {
   };
 }
 
-export const deleteTodo = (todo) => {
-  const url = 'http://localhost:3001/todos/' + todo.id;
-  return (dispatch) => {
-    dispatch(sendDeleteTodo(true));
-    dispatch(removeTodo(todo));
+// export const deleteTodo = (todo) => {
+//   const url = 'http://localhost:3001/todos/' + todo.id;
+//   return (dispatch) => {
+//     dispatch(sendDeleteTodo(true));
+//     dispatch(removeTodo(todo));
 
-    fetch(url,{
-      method: 'DELETE'
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
+//     fetch(url,{
+//       method: 'DELETE'
+//     })
+//       .then((response) => {
+//         if (!response.ok) {
+//           throw Error(response.statusText);
+//         }
 
-        dispatch(sendDeleteTodo(false));
+//         dispatch(sendDeleteTodo(false));
 
-        return response;
-      })
-      .catch(() => dispatch(sendDeleteIsFailureTodo(true)));
-  };
-}
+//         return response;
+//       })
+//       .catch(() => dispatch(sendDeleteIsFailureTodo(true)));
+//   };
+// }

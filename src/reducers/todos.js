@@ -11,15 +11,15 @@ export default function todos( state = initialState, action){
     switch (action.type) {
       case actionTypes.TODOS_SEND_GET:
         return {
-          ...state, isRequesting: action.isLoading, error: ''
+          ...state, isRequesting: true, error: ''
         }
       case actionTypes.TODOS_SEND_GET_IS_SUCCESS:
         return {
-          ...state,  todos: action.todos, error: ''
+          ...state,  isRequesting: false, todos: action.todos, error: ''
         }
       case actionTypes.TODOS_SEND_GET_IS_FAILURE:
         return {
-          ...state, error: action.error
+          ...state, isRequesting: false, error: action.error
         }
       case actionTypes.TODO_ADD:
         return {
@@ -32,11 +32,15 @@ export default function todos( state = initialState, action){
           }
       case actionTypes.TODO_SEND_CREATE:
         return {
-          ...state, isRequesting: action.isLoading, error: ''
+          ...state, isRequesting: true, error: ''
         }
       case actionTypes.TODO_SEND_CREATE_IS_FAILURE:
         return {
-          ...state, error: action.error
+          ...state, isRequesting: false, error: action.error
+        }
+      case actionTypes.TODO_SEND_CREATE_IS_SUCCESS:
+        return {
+          ...state, isRequesting: false, error: ''
         }
       case actionTypes.TODO_SEND_UPDATE:
         return {
@@ -44,7 +48,7 @@ export default function todos( state = initialState, action){
         }
       case actionTypes.TODO_MODIFY:
         return {
-          ...state, todos: state.todos.map(todo => todo.id === action.todo.id ?
+          ...state, todos: state.todos.map(todo => todo.id === action.id ?
             {...todo, id: action.todo.id, text: action.todo.text,
               completed: action.todo.completed }
             : todo)

@@ -34,8 +34,8 @@ class TodoList extends Component {
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
                           { this.incompleteTodos.map(todo =>
-                            <Todo key={todo.id} deleteTodo={this.props.actions.deleteTodo}
-                              update={this.props.actions.updateTodo}
+                            <Todo key={todo.id} deleteTodo={this.props.actions.sendDeleteTodo}
+                              update={this.props.actions.sendUpdateTodo}
                               markCompleted={this.props.actions.markAsCompletedTodo}
                             todo={todo} />
                             )}

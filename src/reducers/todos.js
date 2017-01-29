@@ -44,7 +44,7 @@ export default function todos( state = initialState, action){
         }
       case actionTypes.TODO_SEND_UPDATE:
         return {
-          ...state, isRequesting: action.isLoading, error: ''
+          ...state, isRequesting: true, error: ''
         }
       case actionTypes.TODO_MODIFY:
         return {
@@ -55,11 +55,15 @@ export default function todos( state = initialState, action){
         }
       case actionTypes.TODO_SEND_UPDATE_IS_FAILURE:
         return {
-          ...state, error: action.error
+          ...state, isRequesting: false, error: action.error
+        }
+      case actionTypes.TODO_SEND_UPDATE_IS_SUCCESS:
+        return {
+          ...state, isRequesting: false, error: ''
         }
       case actionTypes.TODO_SEND_DELETE:
         return {
-          ...state, isRequesting: action.isLoading
+          ...state, isRequesting: true, error: ''
         }
       case actionTypes.TODO_REMOVE:
         return {
@@ -67,7 +71,11 @@ export default function todos( state = initialState, action){
         }
       case actionTypes.TODO_SEND_DELETE_IS_FAILURE:
         return {
-          ...state, error: action.error
+          ...state, isRequesting: false, error: action.error
+        }
+      case actionTypes.TODO_SEND_DELETE_IS_SUCCESS:
+        return {
+          ...state, isRequesting: false, error: ''
         }
       default:
         return state;

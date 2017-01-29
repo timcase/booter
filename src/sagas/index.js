@@ -1,8 +1,11 @@
-import { watchTodosSendGet, watchTodoSendCreate }  from './watchers';
+import { watchTodosSendGet, watchTodoSendCreate,
+  watchTodoSendUpdate, watchTodoSendDelete }  from './watchers';
 
 export default function* rootSaga() {
   yield [
     watchTodosSendGet(),
-    watchTodoSendCreate()
+    watchTodoSendCreate(),
+    watchTodoSendUpdate(),
+    watchTodoSendDelete()
   ]
 }

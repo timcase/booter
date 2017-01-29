@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
 import isObject from 'lodash/isObject';
 
-const HOST = 'http://localhost:3001/';
+const HOST = 'http://localhost:3001';
 const HEADERS = {'Content-Type': 'application/json'};
 
 function checkStatus(response) {
@@ -26,7 +26,9 @@ function parseJSONerror(json){
 }
 
 function parseJSON(response) {
-  return response.json()
+   return response.text().then(function(text) {
+    return text ? JSON.parse(text) : {}
+  })
 }
 
 function request(url, options){
@@ -36,12 +38,23 @@ function request(url, options){
 }
 
 export const get = (path, options={}) => {
-  return request(HOST + path, Object.assign({}, {method: 'GET',
+  return request([HOST, path].join("/"), Object.assign({}, {method: 'GET',
   headers: HEADERS}, options));
 }
 
 export const post = (path, options={}) => {
-  return request(HOST + path, Object.assign({}, {method: 'POST',
+  return request([HOST, path].join("/"), Object.assign({}, {method: 'POST',
     headers: HEADERS, body: JSON.stringify(options['payload'])}, options));
 }
 
+export const put = (path, options={}) => {
+  return request([HOST, path, options['payload'].id].join("/"),
+    Object.assign({}, {method: 'PUT', headers: HEADERS,
+      body: JSON.stringify(options['payload'])}, options));
+}
+
+export const del = (path, options={}) => {
+  return request([HOST, path, options['payload'].id].join("/"),
+    Object.assign({}, {method: 'DELETE', headers: HEADERS,
+      body: JSON.stringify(options['payload'])}, options));
+}

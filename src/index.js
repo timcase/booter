@@ -3,17 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
-import { createStore, applyMiddleware } from 'redux';
-import reducers from './reducers';
-import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import configureStore from './store/configure_store';
 import { Provider } from 'react-redux';
 import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import App from './containers/app';
+import Main from './components/main';
 
-const store = createStore(reducers, composeWithDevTools(
-    applyMiddleware(thunk)
-  ));
+const store = configureStore();
 
 // Save a reference to the root element for reuse
 const rootEl = document.getElementById("root");
@@ -21,13 +18,13 @@ const rootEl = document.getElementById("root");
 const history = syncHistoryWithStore(browserHistory, store);
 // Create a reusable render method that we can call more than once
 let render = () => {
-    // Dynamically import our main App component, and render it
-  const App = require("./containers/app").default;
 
     ReactDOM.render(
         <Provider store={store}>
           <Router history={history}>
-            <Route path="/" component={App}/>
+            <Route path="/" component={App}>
+              <Route path="/todos" component={Main} />
+            </Route>
           </Router>
         </Provider>,
         rootEl

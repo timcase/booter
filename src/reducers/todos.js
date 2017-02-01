@@ -27,7 +27,8 @@ export default function todos( state = initialState, action){
           {
             id: state.todos.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
             completed: false,
-            text: action.todo.text
+            text: action.todo.text,
+            tag: action.todo.tag
           }]
           }
       case actionTypes.TODO_SEND_CREATE:
@@ -46,7 +47,7 @@ export default function todos( state = initialState, action){
         return {
           ...state, todos: state.todos.map(todo => todo.id === action.todo.id ?
             {...todo, id: action.todo.id, text: action.todo.text,
-              completed: action.todo.completed }
+              completed: action.todo.completed, tag: action.todo.tag }
             : todo)
         }
       case actionTypes.TODO_SEND_UPDATE_IS_FAILURE:

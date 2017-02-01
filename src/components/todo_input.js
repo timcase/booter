@@ -18,10 +18,14 @@ class TodoInput extends Component {
     });
   }
 
+  get tag(){
+    return this.props.tag;
+  }
+
   handleSubmit = (e) => {
     const text = e.target.value.trim()
     if (e.which === 13) {
-      this.props.save({text: text});
+      this.props.save({text: text, tag: this.tag});
       this.setState({ text: '' })
     }
   }

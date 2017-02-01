@@ -10,17 +10,26 @@ const TODO_FILTERS = {
 }
 
 class TodoList extends Component {
+  componentDidMount() {
+    this.props.actions.getTodos();
+  }
 
   get todos(){
     return this.props.todos;
   }
 
   get completedTodos(){
-    return this.todos.filter(TODO_FILTERS['completed']);
+    return this.todos.filter(TODO_FILTERS['completed'])
+      .filter(todo => todo.tag === this.tag);
   }
 
   get incompleteTodos(){
-    return this.todos.filter(TODO_FILTERS['active']);
+    return this.todos.filter(TODO_FILTERS['active'])
+      .filter(todo => todo.tag === this.tag);
+  }
+
+  get tag(){
+    return (this.props.params.tag || 'inbox');
   }
 
   render() {
@@ -29,8 +38,8 @@ class TodoList extends Component {
           <div className="row">
               <div className="col-md-6">
                   <div className="todolist not-done">
-                  <h1>Todos</h1>
-                    <TodoInput save={this.props.actions.createTodo} />
+                  <h1>Todos - {this.props.params.tag}</h1>
+                    <TodoInput tag={this.tag} save={this.props.actions.createTodo} />
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
                           { this.incompleteTodos.map(todo =>

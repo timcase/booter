@@ -106,7 +106,8 @@ export const createTodo = (todo) => {
       },
       body: JSON.stringify({
         text: todo.text,
-        completed: false
+        completed: false,
+        tag: todo.tag
       })
     })
       .then(checkStatus)
@@ -150,7 +151,8 @@ export const updateTodo = (todo, originalTodo) => {
       body: JSON.stringify({
         id: todo.id,
         text: todo.text,
-        completed: todo.completed
+        completed: todo.completed,
+        tag: todo.tag
       })
     })
       .then(checkStatus)

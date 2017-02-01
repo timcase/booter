@@ -5,21 +5,16 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import configureStore from './store/configure_store';
 import { Provider } from 'react-redux';
-import { Router, Route, browserHistory } from 'react-router';
+import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import App from './containers/app';
-import Main from './components/main';
+import routes from './routes';
 
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
 ReactDOM.render(
     <Provider store={store}>
-      <Router history={history}>
-        <Route path="/" component={App}>
-          <Route path="/todos" component={Main} />
-        </Route>
-      </Router>
+      <Router history={history} routes={routes} />
     </Provider>,
           document.getElementById("root")
 );

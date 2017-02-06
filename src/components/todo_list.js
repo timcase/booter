@@ -32,6 +32,16 @@ class TodoList extends Component {
     return (this.props.params.tag || 'inbox');
   }
 
+  handleClick = () => {
+      if (this.props.params.tag === 'inbox') {
+        this.props.actions.redirectToOtherList('/lists/next');
+
+      }
+      else {
+        this.props.actions.redirectToOtherList('/lists/inbox');
+      }
+  }
+
   render() {
     return (
       <div className="container">
@@ -39,6 +49,7 @@ class TodoList extends Component {
               <div className="col-md-6">
                   <div className="todolist not-done">
                   <h1>Todos - {this.props.params.tag}</h1>
+                  <a onClick={this.handleClick}>Go to other list</a>
                     <TodoInput tag={this.tag} save={this.props.actions.createTodo} />
                           <hr/>
                           <ul id="sortable" className="list-unstyled">

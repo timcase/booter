@@ -1,5 +1,6 @@
 import * as actionTypes from '../constants/action_types';
 import isObject from 'lodash/isObject';
+import { push } from 'react-router-redux';
 
 export const sendGetTodos = (isRequesting) => {
   return {
@@ -45,6 +46,12 @@ function parseJSONerror(json){
 
 function parseJSON(response) {
   return response.json()
+}
+
+export const redirectToOtherList = (path) => {
+  return (dispatch) => {
+    dispatch(push(path));
+  }
 }
 
 export const getTodos = () => {

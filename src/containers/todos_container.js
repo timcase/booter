@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as TodoActions from '../actions';
+import * as TodoActions from '../actions/todos';
 import TodoList from '../components/todo_list';
 
 const mapDispatchToProps = dispatch => ({

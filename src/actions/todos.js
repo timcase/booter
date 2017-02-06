@@ -1,7 +1,5 @@
 import * as actionTypes from '../constants/action_types';
 import isObject from 'lodash/isObject';
-import jwtDecode from 'jwt-decode';
-import push from 'react-router-redux';
 
 export const sendGetTodos = (isRequesting) => {
   return {
@@ -214,66 +212,3 @@ export const deleteTodo = (todo) => {
 }
 
 
-export const sendCreateLoginUser = (isRequesting) => {
-  return {
-    type: actionTypes.LOGIN_USER_SEND_CREATE,
-    isRequesting: isRequesting
-  };
-}
-
-export const sendCreateLoginUserIsSuccess = (jwt, decoded) => {
-  localStorage.setItem('jwt', jwt);
-  return {
-    type: actionTypes.LOGIN_USER_SEND_CREATE_IS_SUCCESS,
-    jwt: jwt,
-    userName: decoded.userName
-  }
-}
-
-export const sendCreateLoginUserIsFailure = (error) => {
-  localStorage.removeItem('jwt');
-  return {
-    type: actionTypes.LOGIN_USER_SEND_CREATE_IS_FAILURE,
-    error: error.message
-  }
-}
-
-export const loginUser = (email, password, redirect="/") => {
-   console.log(email);
-   console.log(password);
-   console.log(redirect);
-  const url = 'http://localhost:3001/user_token';
-  return (dispatch) => {
-    console.log('made it here');
-
-    dispatch(sendCreateLoginUser(true));
-
-    fetch(url,{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({auth:{
-        email: email,
-        password: password
-        }})
-    })
-      .then(checkStatus)
-      .then(parseJSON)
-      .then((response) => {
-        dispatch(sendCreateLoginUser(false));
-        try {
-          const decoded = jwtDecode(response.jwt);
-          dispatch(sendCreateLoginUserIsSuccess(response.jwt, decoded));
-          dispatch(push(redirect));
-        } catch (e) {
-          const error = new Error('bad token');
-          dispatch(sendCreateLoginUserIsFailure(error));
-        }
-      })
-      .catch((error) => {
-        dispatch(sendCreateLoginUserIsFailure(error));
-      })
-  };
-}

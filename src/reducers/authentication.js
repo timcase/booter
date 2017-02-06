@@ -1,6 +1,6 @@
 import * as actionTypes from '../constants/action_types';
 const initialState = {
-  token: null,
+  jwt: null,
   userName: null,
   isAuthenticated: false,
   isRequesting: false,
@@ -23,6 +23,11 @@ export default function authentication( state = initialState, action){
         return {
           ...state, isRequesting: false, isAuthenticated: false, jwt: null,
           userName: null, error: action.error
+        }
+      case actionTypes.LOGOUT_USER:
+        return {
+          ...state, isRequesting: false, isAuthenticated: false, jwt: null,
+          userName: null, error: null
         }
       default:
         return state;

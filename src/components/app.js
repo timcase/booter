@@ -21,6 +21,22 @@ class App extends Component {
       }
   }
 
+  get errorAlert(){
+      if (this.props.error !== undefined) {
+        return (
+          <div className="container">
+            <div className="alert alert-danger fade in">
+              {this.props.error}
+            </div>
+          </div>
+        );
+      }
+      else{
+        return null;
+      }
+  }
+
+
   render() {
     return (
       <div>
@@ -55,6 +71,7 @@ class App extends Component {
             </p>
           </Grid>
         </Jumbotron>
+        {this.errorAlert}
         {this.props.children}
       </div>
     )

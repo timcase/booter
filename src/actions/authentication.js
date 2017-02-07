@@ -8,6 +8,11 @@ function checkStatus(response) {
     return Promise.resolve(response)
   }
 
+  if (response.status === 404) {
+    const error = new Error('not found');
+    return Promise.reject(Object.assign(error, { response }));
+  }
+
   return response.json().then(json => {
     const error = new Error(parseJSONerror(json) || response.statusText)
     return Promise.reject(Object.assign(error, { response }))
@@ -79,12 +84,17 @@ export const loginUser = (email, password, redirect="/") => {
           dispatch(sendCreateLoginUserIsSuccess(response.jwt, decoded));
           dispatch(push(redirect));
         } catch (e) {
-          const error = new Error('bad token');
+          const error = new Error('Bad username or password');
           dispatch(sendCreateLoginUserIsFailure(error));
         }
       })
       .catch((error) => {
-        dispatch(sendCreateLoginUserIsFailure(error));
+        if (error.message === 'not found') {
+          const error = new Error('Bad username or password');
+          dispatch(sendCreateLoginUserIsFailure(error));
+        } else {
+          dispatch(sendCreateLoginUserIsFailure(error));
+        }
       })
   };
 }

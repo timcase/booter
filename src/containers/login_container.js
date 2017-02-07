@@ -9,6 +9,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = (state) => {
   return { isAuthenticated: state.authentication.isAuthenticated,
+    error: state.authentication.error,
     jwt: state.authentication.jwt }
 };
 

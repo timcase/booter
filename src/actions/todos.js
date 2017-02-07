@@ -56,10 +56,13 @@ export const redirectToOtherList = (path) => {
 
 export const getTodos = () => {
   const url = 'http://localhost:3001/todos';
-  return (dispatch) => {
+  return (dispatch, state) => {
     dispatch(sendGetTodos(true));
 
-    fetch(url)
+    fetch(url, { credentials: 'include', headers: {
+      'Authorization': `Bearer ${state().authentication.jwt}`
+      }
+    })
       .then(checkStatus)
       .then(parseJSON)
       .then((todos) => {
@@ -102,14 +105,16 @@ export const sendCreateIsFailureTodo = (error) => {
 
 export const createTodo = (todo) => {
   const url = 'http://localhost:3001/todos';
-  return (dispatch) => {
+  return (dispatch, state) => {
     dispatch(sendCreateTodo(true));
     dispatch(addTodo(todo));
 
     fetch(url,{
       method: 'POST',
+      credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state().authentication.jwt}`
       },
       body: JSON.stringify({
         text: todo.text,
@@ -146,14 +151,16 @@ export const sendUpdateIsFailureTodo = (error) => {
 
 export const updateTodo = (todo, originalTodo) => {
   const url = 'http://localhost:3001/todos/' + todo.id;
-  return (dispatch) => {
+  return (dispatch, state) => {
     dispatch(sendUpdateTodo(true));
     dispatch(modifyTodo(todo));
 
     fetch(url,{
       method: 'PUT',
+      credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state().authentication.jwt}`
       },
       body: JSON.stringify({
         id: todo.id,
@@ -198,12 +205,17 @@ export const sendDeleteIsFailureTodo = (error) => {
 
 export const deleteTodo = (todo) => {
   const url = 'http://localhost:3001/todos/' + todo.id;
-  return (dispatch) => {
+  return (dispatch, state) => {
     dispatch(sendDeleteTodo(true));
     dispatch(removeTodo(todo));
 
     fetch(url,{
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state().authentication.jwt}`
+      },
     })
       .then((response) => {
         if (!response.ok) {

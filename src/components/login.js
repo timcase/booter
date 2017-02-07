@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import './login.css';
 
 class Login extends Component {
@@ -75,7 +75,7 @@ class Login extends Component {
                 <a href="#" className="pull-right need-help">Need help? </a><span className="clearfix"></span>
                 </form>
             </div>
-            <a href="#" className="text-center new-account">Create an account </a>
+            <Link to="/signup" className="text-center new-account">Create an account</Link>
         </div>
     </div>
   </div>

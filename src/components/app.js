@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Jumbotron, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
-import jwtDecode from 'jwt-decode';
 
 class App extends Component {
 
@@ -9,13 +8,9 @@ class App extends Component {
     this.props.actions.logoutAndRedirect();
   }
 
-  get userName(){
-    return jwtDecode(this.props.jwt).user_name;
-  }
-
   get loginLink(){
       if (this.props.isAuthenticated) {
-        return (<p className="navbar-text navbar-right">Logged in as {this.userName}, <a className="navbar-link" onClick={this.handleLogoutClick} style={{cursor: 'pointer'}}>click to logout</a></p>);
+        return (<p className="navbar-text navbar-right">Logged in as {this.props.userName}, <a className="navbar-link" onClick={this.handleLogoutClick} style={{cursor: 'pointer'}}>click to logout</a></p>);
       } else {
         return(<Link className="navbar-text nav-link navbar-right" to="/login">Login</Link>);
       }

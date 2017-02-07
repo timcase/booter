@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link, browserHistory } from 'react-router';
-
 import './login.css';
 
 class Login extends Component {

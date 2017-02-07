@@ -45,7 +45,7 @@ export const sendCreateLoginUserIsSuccess = (jwt, decoded) => {
   return {
     type: actionTypes.LOGIN_USER_SEND_CREATE_IS_SUCCESS,
     jwt: jwt,
-    userName: decoded.userName
+    userName: decoded.user_name
   }
 }
 

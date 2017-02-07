@@ -1,6 +1,6 @@
 import * as actionTypes from '../constants/action_types';
 import jwtDecode from 'jwt-decode';
-import push from 'react-router-redux';
+import {push} from 'react-router-redux';
 import isObject from 'lodash/isObject';
 
 function checkStatus(response) {
@@ -77,7 +77,7 @@ export const loginUser = (email, password, redirect="/") => {
         try {
           const decoded = jwtDecode(response.jwt);
           dispatch(sendCreateLoginUserIsSuccess(response.jwt, decoded));
-          // dispatch(push(redirect));
+          dispatch(push(redirect));
         } catch (e) {
           const error = new Error('bad token');
           dispatch(sendCreateLoginUserIsFailure(error));

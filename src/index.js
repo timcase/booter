@@ -16,7 +16,7 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 let jwt = localStorage.getItem('jwt');
 if (jwt !== null) {
-    store.dispatch(sendCreateLoginUserIsSuccess(jwt, jwtDecode(jwt)));
+  store.dispatch(sendCreateLoginUserIsSuccess(jwt, jwtDecode(jwt)));
 }
 
 ReactDOM.render(

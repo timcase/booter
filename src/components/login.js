@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import './login.css';
 
 class Login extends Component {
@@ -7,6 +8,11 @@ class Login extends Component {
     this.state = {
       email: '',
       password: ''
+    }
+  }
+  componentWillMount() {
+    if (this.props.isAuthenticated) {
+      browserHistory.push("/");
     }
   }
 
@@ -23,7 +29,7 @@ class Login extends Component {
   }
 
   get redirectTo(){
-    return (this.props.location.query.next || '/login');
+    return (this.props.location.query.next || '/');
   }
 
   handleSubmit = (e) => {

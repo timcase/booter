@@ -8,8 +8,8 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mapStateToProps = (state) => {
-  return { todos: state.authentication.userName, isRequesting: state.authentication.isRequesting,
-    error: state.authentication.error };
+  return { isAuthenticated: state.authentication.isAuthenticated,
+    jwt: state.authentication.jwt }
 };
 
 const LoginContainer = connect(

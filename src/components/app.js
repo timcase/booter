@@ -1,35 +1,23 @@
 import React, { Component } from 'react';
 import { Grid, Jumbotron, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
+import jwtDecode from 'jwt-decode';
 
 class App extends Component {
-  get loadAlert(){
-      if (this.props.isRequesting) {
-        return (
-          <div className="container">
-            <div className="alert alert-warning fade in">
-              Loading todos...
-            </div>
-          </div>
-        );
-      }
-      else{
-        return null;
-      }
+
+  handleLogoutClick = () => {
+    this.props.actions.logoutAndRedirect();
   }
 
-  get errorAlert(){
-      if (this.props.error !== undefined) {
-        return (
-          <div className="container">
-            <div className="alert alert-danger fade in">
-              {this.props.error}
-            </div>
-          </div>
-        );
-      }
-      else{
-        return null;
+  get userName(){
+    return jwtDecode(this.props.jwt).user_name;
+  }
+
+  get loginLink(){
+      if (this.props.isAuthenticated) {
+        return (<p className="navbar-text navbar-right">Logged in as {this.userName}, <a className="navbar-link" onClick={this.handleLogoutClick} style={{cursor: 'pointer'}}>click to logout</a></p>);
+      } else {
+        return(<Link className="navbar-text nav-link navbar-right" to="/login">Login</Link>);
       }
   }
 
@@ -39,30 +27,17 @@ class App extends Component {
         <nav className="navbar navbar-inverse navbar-fixed-top">
           <div className="container">
             <div className="navbar-header">
-              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span className="sr-only">Toggle navigation</span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-              </button>
-              <a className="navbar-brand" href="#">Booter</a>
+              <a className="navbar-brand" href="#">Booter!</a>
             </div>
             <div id="navbar" className="navbar-collapse collapse">
               <ul className="nav navbar-nav">
                 <li><Link activeClassName="active" to="/lists/inbox">inbox</Link></li>
                 <li><Link activeClassName="active" to="/lists/next">next</Link></li>
               </ul>
-              <form className="navbar-form navbar-right">
-                <div className="form-group">
-                  <input type="text" placeholder="Email" className="form-control"/>
-                </div>
-                <div className="form-group">
-                  <input type="password" placeholder="Password" className="form-control"/>
-                </div>
-                <button type="submit" className="btn btn-success">Sign in</button>
-              </form>
+                {this.loginLink}
             </div>
           </div>
+
         </nav>
         <Jumbotron>
           <Grid>
@@ -74,12 +49,12 @@ class App extends Component {
                 href="http://react-bootstrap.github.io/components.html"
                 target="_blank">
                 View React Bootstrap Docs
+
               </Button>
+
             </p>
           </Grid>
         </Jumbotron>
-        {this.loadAlert}
-        {this.errorAlert}
         {this.props.children}
       </div>
     )

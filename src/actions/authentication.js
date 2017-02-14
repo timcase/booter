@@ -99,6 +99,54 @@ export const loginUser = (email, password, redirect="/") => {
   };
 }
 
+export const sendCreateUser = (isRequesting) => {
+  return {
+    type: actionTypes.USER_SEND_CREATE,
+    isRequesting: isRequesting
+  };
+}
+
+export const signupUser= (name, email, password, redirect="/") => {
+  const url = 'http://localhost:3001/users';
+  return (dispatch) => {
+
+    dispatch(sendCreateUser(true));
+
+    fetch(url,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({user:{
+        name: name,
+        email: email,
+        password: password
+        }})
+    })
+      .then(checkStatus)
+      .then(parseJSON)
+      .then((response) => {
+        dispatch(sendCreateUser(false));
+        try {
+          const decoded = jwtDecode(response.jwt);
+          dispatch(sendCreateLoginUserIsSuccess(response.jwt, decoded));
+          dispatch(push(redirect));
+        } catch (e) {
+          const error = new Error('Bad username or password');
+          dispatch(sendCreateLoginUserIsFailure(error));
+        }
+      })
+      .catch((error) => {
+        if (error.message === 'not found') {
+          const error = new Error('Bad username or password');
+          dispatch(sendCreateLoginUserIsFailure(error));
+        } else {
+          dispatch(sendCreateLoginUserIsFailure(error));
+        }
+      })
+  };
+}
 export function logout() {
     localStorage.removeItem('jwt');
     return {
@@ -112,3 +160,4 @@ export function logoutAndRedirect() {
         dispatch(push('/login'));
     }
 }
+

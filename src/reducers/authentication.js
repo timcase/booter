@@ -10,6 +10,10 @@ const initialState = {
 export default function authentication( state = initialState, action){
 
     switch (action.type) {
+      case actionTypes.USER_SEND_CREATE:
+        return {
+          ...state, isRequesting: action.isRequesting, error: ''
+        }
       case actionTypes.LOGIN_USER_SEND_CREATE:
         return {
           ...state, isRequesting: action.isRequesting, error: ''

@@ -2520,7 +2520,7 @@ ignore@^3.1.5:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.2.0.tgz#8d88f03c3002a0ac52114db25d2c673b0bf1e435"
 
-immutability-helper@^2.0.0:
+immutability-helper@^2.0.0, immutability-helper@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/immutability-helper/-/immutability-helper-2.1.1.tgz#d80e7577fae14cddde99d8946666d79973e7ba13"
   dependencies:
@@ -5206,6 +5206,10 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "~1.0.0"
     spdx-expression-parse "~1.0.0"
+
+validator@^6.2.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-6.2.1.tgz#bc575b78d15beb2e338a665ba9530c7f409ef667"
 
 vary@~1.1.0:
   version "1.1.0"

@@ -41,12 +41,12 @@ class Signup extends Component {
       }
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
+  handleSubmit = () => {
+    console.log(this.state.fields.name);
     this.props.actions.signupUser(
-      this.state.name,
-      this.state.email,
-      this.state.password,
+      this.state.fields.name,
+      this.state.fields.email,
+      this.state.fields.password,
       this.redirectTo)
   }
 
@@ -62,7 +62,7 @@ class Signup extends Component {
                 <SignupForm
                   fields={this.state.fields}
                   onChange={this.fieldChange}
-                  onValid={ () => alert('submitting...')}
+                  onValid={this.handleSubmit}
                   onInvalid={() => alert('Error!')}
                 />
             </div>

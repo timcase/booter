@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+import Promise from 'bluebird';
 import validator from 'validator';
 import {validated} from 'react-custom-validation';
 
+
+const isUnique = (email) => Promise.delay(5000)
+  .then(() => email.includes('used') ? 'This email is already used.' : null)
 
  const isEmail = (email) =>
     validator.isEmail(email) ? null : 'This is not valid.'
@@ -23,7 +27,8 @@ import {validated} from 'react-custom-validation';
     validations: {
       name: [[nameMinLength, name, 1]],
       email: [
-        [isEmail, email]
+        [isEmail, email],
+        [isUnique, email]
       ],
       password: [[passMinLength, password, 6]],
     }
@@ -33,6 +38,19 @@ class SignupForm extends Component {
 
   render() {
     const {fields, onChange, onValid, onInvalid, $field, $validation} = this.props
+    let {isValid, error: {reason}, show} = $validation['email']
+
+    let validationMessage = {
+      true: 'Email is available!',
+      null: ' Checking if available...',
+      false: reason
+    }[isValid]
+    let errorStyle = {
+      true: {float: 'right', color: '#24a224'},
+      null: {},
+      false: {float: 'right', color: 'red'}
+    }[isValid]
+
     return (
       <form className="form-signin">
         {this.errorAlert}
@@ -47,7 +65,7 @@ class SignupForm extends Component {
           autoFocus />
 
         <label>Email</label>
-        {$validation.email.show && <span style={{float: 'right', color: 'red'}}>{$validation.email.error.reason}</span>}
+        {show && <span  style={errorStyle}>{validationMessage}</span>}
         <input type="text"
           value={fields.email}
           {...$field('email', (e) => onChange('email', e.target.value))}

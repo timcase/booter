@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
-import Promise from 'bluebird';
 import validator from 'validator';
 import {validated} from 'react-custom-validation';
 
 
-const isUnique = (email) => Promise.delay(5000)
-  .then(() => email.includes('used') ? 'This email is already used.' : null)
+const checkEmail = (email) => {
+  const url = `http://localhost:3001/users/search?email=${email}`;
+  fetch(url)
+   .then((response) => {
+      if (response.ok) {
+        return true
+      } else {
+        return false
+      }
+  })
+
+}
+
+const isUnique = (email) =>
+  checkEmail(email) ? 'This email is already used.' : null
 
  const isEmail = (email) =>
     validator.isEmail(email) ? null : 'This is not valid.'

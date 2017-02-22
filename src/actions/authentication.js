@@ -1,33 +1,30 @@
 import * as actionTypes from '../constants/action_types';
 import jwtDecode from 'jwt-decode';
 import {push} from 'react-router-redux';
-import isObject from 'lodash/isObject';
+// import isObject from 'lodash/isObject';
+import { SubmissionError } from 'redux-form';
 
 function checkStatus(response) {
   if (response.ok) {
-    return Promise.resolve(response)
+    return response;
   }
-
   if (response.status === 404) {
-    const error = new Error('not found');
-    return Promise.reject(Object.assign(error, { response }));
+    throw new Error('not found');
   }
-
-  return response.json().then(json => {
-    const error = new Error(parseJSONerror(json) || response.statusText)
-    return Promise.reject(Object.assign(error, { response }))
-  })
+  else {
+    throw new Error('network error');
+  }
 }
 
-function parseJSONerror(json){
-  if (isObject(json) === false){
-    return null;
-  }
+// function parseJSONerror(json){
+//   if (isObject(json) === false){
+//     return null;
+//   }
 
-  return Object.keys(json).map((key) => {
-    return key + ' ' + json[key].join(', ')
-  }).join(" ");
-}
+//   return Object.keys(json).map((key) => {
+//     return key + ' ' + json[key].join(', ')
+//   }).join(" ");
+// }
 
 function parseJSON(response) {
   return response.json()
@@ -57,14 +54,13 @@ export const sendCreateLoginUserIsFailure = (error) => {
   }
 }
 
-
 export const loginUser = (email, password, redirect="/") => {
   const url = 'http://localhost:3001/user_token';
   return (dispatch) => {
 
     dispatch(sendCreateLoginUser(true));
 
-    fetch(url,{
+    return fetch(url,{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -73,9 +69,8 @@ export const loginUser = (email, password, redirect="/") => {
       body: JSON.stringify({auth:{
         email: email,
         password: password
-        }})
-    })
-      .then(checkStatus)
+      }})
+    }).then(checkStatus)
       .then(parseJSON)
       .then((response) => {
         dispatch(sendCreateLoginUser(false));
@@ -84,14 +79,14 @@ export const loginUser = (email, password, redirect="/") => {
           dispatch(sendCreateLoginUserIsSuccess(response.jwt, decoded));
           dispatch(push(redirect));
         } catch (e) {
-          const error = new Error('Bad username or password');
+          const error = new Error('Bad JWT Token returned');
           dispatch(sendCreateLoginUserIsFailure(error));
         }
       })
       .catch((error) => {
         if (error.message === 'not found') {
-          const error = new Error('Bad username or password');
-          dispatch(sendCreateLoginUserIsFailure(error));
+          throw new SubmissionError({
+            _error: 'Login failed, check email or password'});
         } else {
           dispatch(sendCreateLoginUserIsFailure(error));
         }
@@ -122,7 +117,7 @@ export const signupUser= (name, email, password, redirect="/") => {
         name: name,
         email: email,
         password: password
-        }})
+      }})
     })
       .then(checkStatus)
       .then(parseJSON)
@@ -148,16 +143,16 @@ export const signupUser= (name, email, password, redirect="/") => {
   };
 }
 export function logout() {
-    localStorage.removeItem('jwt');
-    return {
-        type: actionTypes.LOGOUT_USER
-    }
+  localStorage.removeItem('jwt');
+  return {
+    type: actionTypes.LOGOUT_USER
+  }
 }
 
 export function logoutAndRedirect() {
-    return (dispatch) => {
-        dispatch(logout());
-        dispatch(push('/login'));
-    }
+  return (dispatch) => {
+    dispatch(logout());
+    dispatch(push('/login'));
+  }
 }
 

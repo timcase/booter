@@ -3,6 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 
 const required = value => value ? undefined : 'Required'
 
+
 const maxLength = max => value =>
   value && value.length > max ? `Must be ${max} characters or less` : undefined
 
@@ -16,12 +17,25 @@ const aol = value =>
   value && /.+@aol\.com/.test(value) ?
   'Really? You still use AOL for your email?' : undefined
 
-const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
+const renderField = ({ input, label, type, meta: { touched, error, warning, asyncValidating } }) => (
     <div>
       <input {...input} placeholder={label} type={type}/>
       {touched && ((error && <span style={{float: 'right', color: 'red'}}>{error}</span>) || (warning && <span>{warning}</span>))}
+      {asyncValidating && <div className="text-warning">Checking email...</div>}
     </div>
 )
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+const asyncValidate = (values/*, dispatch */) => {
+  return sleep(1000) // simulate server latency
+    .then(() => {
+      console.log('made it here');
+      if ([ 'gk@karmacrash.com'].includes(values.email)) {
+        throw { email: 'That email is already registered' }
+      }
+    })
+}
 
 const SignupForm = (props) => {
   const { handleSubmit, pristine, submitting } = props;
@@ -49,5 +63,8 @@ const SignupForm = (props) => {
 }
 
 export default reduxForm({
-  form: 'signup'
+  form: 'signup',
+  asyncValidate,
+  asyncBlurFields: ['email']
+
 })(SignupForm);

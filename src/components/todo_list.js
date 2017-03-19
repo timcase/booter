@@ -8,6 +8,9 @@ class TodoList extends Component {
     this.props.actions.getTodos();
   }
 
+  get tag(){
+    return this.props.params.tag;
+  }
   handleClick = () => {
       if (this.props.params.tag === 'inbox') {
         this.props.actions.redirectToOtherList('/lists/next');

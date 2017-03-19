@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import * as TodoActions from '../actions/todos';
 import TodoList from '../components/todo_list';
 import { requireAuthentication} from '../components/require_authentication';
-import { getVisibleTodos } from '../reducers';
-
+import { getVisibleTodos } from '../selectors';
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(TodoActions, dispatch)
@@ -12,10 +11,8 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = (state) => {
   return {
-    completedTodos: getVisibleTodos(state.todos.todos, 'SHOW_COMPLETED',
-      'inbox'),
-    incompleteTodos: getVisibleTodos(state.todos.todos, 'SHOW_INCOMPLETE',
-      'inbox'),
+    completedTodos: getVisibleTodos(state, 'SHOW_COMPLETED'),
+    incompleteTodos: getVisibleTodos(state, 'SHOW_INCOMPLETE'),
     isRequesting: state.todos.isRequesting,
     error: state.todos.error };
 };

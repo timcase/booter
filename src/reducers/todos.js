@@ -71,3 +71,16 @@ export default function todos( state = initialState, action){
     }
 
 }
+
+export const getVisibleTodos = (state, filter, tag) => {
+  switch (filter) {
+    case 'SHOW_ALL':
+      return state
+    case 'SHOW_COMPLETED':
+      return state.filter(t => t.completed).filter(todo => todo.tag === tag)
+    case 'SHOW_INCOMPLETE':
+      return state.filter(t => !t.completed).filter(todo => todo.tag === tag)
+    default:
+      throw new Error('Unknown filter: ' + filter)
+  }
+}

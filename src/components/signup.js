@@ -54,7 +54,6 @@ class Signup extends Component {
   }
 
   handleSubmit = (values) => {
-    console.log(values);
     this.props.actions.signupUser(
       values.name,
       values.email,

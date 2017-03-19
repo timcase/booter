@@ -30,7 +30,6 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 const asyncValidate = (values/*, dispatch */) => {
   return sleep(1000) // simulate server latency
     .then(() => {
-      console.log('made it here');
       if ([ 'gk@karmacrash.com'].includes(values.email)) {
         throw { email: 'That email is already registered' }
       }

@@ -239,9 +239,6 @@ export const sendCreateLoginUserIsFailure = (error) => {
 }
 
 export const loginUser = (email, password, redirect="/") => {
-   console.log(email);
-   console.log(password);
-   console.log(redirect);
   const url = 'http://localhost:3001/user_token';
   return (dispatch) => {
     console.log('made it here');

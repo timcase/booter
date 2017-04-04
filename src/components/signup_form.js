@@ -31,6 +31,7 @@ const asyncValidate = (values/*, dispatch */) => {
   return sleep(1000) // simulate server latency
     .then(() => {
       if ([ 'gk@karmacrash.com'].includes(values.email)) {
+        // eslint-disable-next-line no-throw-literal
         throw { email: 'That email is already registered' }
       }
     })

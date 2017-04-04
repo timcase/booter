@@ -70,7 +70,7 @@ class Signup extends Component {
                 <h1 className="text-center login-title">Sign up to Booter</h1>
                 <div className="account-wall">
 
-                    <img className="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
+                  <img className="profile-img" src="http://pngimages.net/sites/default/files/business-user-png-image-18016.png"
                       alt=""/>
                     <SignupForm onSubmit={this.handleSubmit} />
                 </div>

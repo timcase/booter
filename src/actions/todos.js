@@ -55,8 +55,8 @@ export const redirectToOtherList = (path) => {
 }
 
 export const getTodos = () => {
-  const url = 'http://localhost:3001/todos';
   return (dispatch, state) => {
+    const url = `http://localhost:3001/users/${state().authentication.userId}/todos`;
     dispatch(sendGetTodos(true));
 
     fetch(url, { credentials: 'include', headers: {
@@ -104,8 +104,9 @@ export const sendCreateIsFailureTodo = (error) => {
 }
 
 export const createTodo = (todo) => {
-  const url = 'http://localhost:3001/todos';
+  console.log(todo);
   return (dispatch, state) => {
+    const url = `http://localhost:3001/users/${state().authentication.userId}/todos`;
     dispatch(sendCreateTodo(true));
     dispatch(addTodo(todo));
 
@@ -119,7 +120,8 @@ export const createTodo = (todo) => {
       body: JSON.stringify({
         text: todo.text,
         completed: false,
-        tag: todo.tag
+        tag: todo.tag,
+        userId: state().authentication.userid
       })
     })
       .then(checkStatus)

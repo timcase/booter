@@ -2,6 +2,7 @@ import * as actionTypes from '../constants/action_types';
 const initialState = {
   jwt: null,
   userName: null,
+  userId: null,
   isAuthenticated: false,
   isRequesting: false,
   error: ''
@@ -21,7 +22,8 @@ export default function authentication( state = initialState, action){
       case actionTypes.LOGIN_USER_SEND_CREATE_IS_SUCCESS:
         return {
           ...state, isAuthenticated: true, jwt: action.jwt,
-          userName: action.userName
+          userName: action.userName,
+          userId: action.userId
         }
       case actionTypes.LOGIN_USER_SEND_CREATE_IS_FAILURE:
         return {

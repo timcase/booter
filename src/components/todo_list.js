@@ -6,6 +6,7 @@ import Todo from './todo';
 class TodoList extends Component {
   componentDidMount() {
     this.props.actions.getTodos();
+    this.props.actions.getDepartments();
   }
 
   handleClick = () => {
@@ -18,15 +19,25 @@ class TodoList extends Component {
       }
   }
 
+  get transportation(){
+    return this.props.departments.filter(d => d.name === 'Transportation')[0] || {todos: []};
+  }
+
   render() {
     return (
       <div className="container">
+        <div className="row">
+          <div className="col-md-6">
+            <h1>Transportation Department todos</h1>
+            {this.transportation.todos.map(todo => <div key={todo.id}>{todo.text}</div>)}
+          </div>
+        </div>
           <div className="row">
               <div className="col-md-6">
                   <div className="todolist not-done">
                   <h1>Todos - {this.props.params.tag}</h1>
                   <a onClick={this.handleClick}>Go to other list</a>
-                    <TodoInput tag={this.tag} save={this.props.actions.createTodo} />
+                    <TodoInput tag={this.props.params.tag} save={this.props.actions.createTodo} />
                           <hr/>
                           <ul id="sortable" className="list-unstyled">
                           { this.props.incompleteTodos.map(todo =>

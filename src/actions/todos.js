@@ -1,6 +1,8 @@
 import * as actionTypes from '../constants/action_types';
 import isObject from 'lodash/isObject';
 import { push } from 'react-router-redux';
+import { normalize } from 'normalizr';
+import { todoListSchema } from '../schemas/todo';
 
 export const sendGetTodos = (isRequesting) => {
   return {
@@ -67,6 +69,9 @@ export const getTodos = () => {
       .then(parseJSON)
       .then((todos) => {
         dispatch(sendGetTodos(false));
+        const normalized = normalize(todos, todoListSchema);
+        console.log(normalized);
+        // console.log('scheam', todoListSchema);
         dispatch(sendGetIsSuccessTodos(todos))
       })
       .catch((error) => {

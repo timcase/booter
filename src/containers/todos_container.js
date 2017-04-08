@@ -4,7 +4,7 @@ import * as TodoActions from '../actions/todos';
 import * as DepartmentActions from '../actions/departments';
 import TodoList from '../components/todo_list';
 import { requireAuthentication} from '../components/require_authentication';
-import { getVisibleTodos } from '../reducers';
+import { getVisibleTodos, getAllDepartments } from '../reducers';
 
 
 const mapDispatchToProps = dispatch => ({
@@ -13,10 +13,10 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = (state) => {
   return {
-    departments: state.departments.departments,
-    completedTodos: getVisibleTodos(state.todos.todos, 'SHOW_COMPLETED',
+    departments: getAllDepartments(state.departments),
+    completedTodos: getVisibleTodos(state.todos, 'SHOW_COMPLETED',
       'inbox'),
-    incompleteTodos: getVisibleTodos(state.todos.todos, 'SHOW_INCOMPLETE',
+    incompleteTodos: getVisibleTodos(state.todos, 'SHOW_INCOMPLETE',
       'inbox'),
     isRequesting: state.todos.isRequesting,
     error: state.todos.error };

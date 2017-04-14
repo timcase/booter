@@ -1,71 +1,66 @@
 import * as actionTypes from '../constants/action_types';
+import {updateObject, updateItemInArray} from './utils';
 const initialState = {
   todos: [],
   isRequesting: false,
   error: ''
 }
 
-
 export default function todos( state = initialState, action){
 
     switch (action.type) {
-      case actionTypes.TODOS_SEND_GET:
-        return {
-          ...state, isRequesting: action.isLoading, error: ''
-        }
-      case actionTypes.TODOS_SEND_GET_IS_SUCCESS:
-        return {
-          ...state,  todos: action.todos, error: ''
-        }
-      case actionTypes.TODOS_SEND_GET_IS_FAILURE:
-        return {
-          ...state, error: action.error
-        }
-      case actionTypes.TODO_ADD:
-        return {
-          ...state, todos: [...state.todos,
-          {
-            id: state.todos.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
+      case actionTypes.TODOS_SEND_GET:{
+        return updateObject(state, {isRequesting: action.meta.isRequesting,
+          error: null})
+      }
+      case actionTypes.TODOS_SEND_GET_IS_SUCCESS:{
+        return updateObject(state, {todos: action.payload})
+      }
+      case actionTypes.TODOS_SEND_GET_IS_FAILURE:{
+        return updateObject(state, {error: action.error})
+      }
+      case actionTypes.TODO_ADD:{
+        const newTodos = state.todos.concat({
+            id: state.todos.reduce((maxId, todo) =>
+              Math.max(todo.id, maxId), -1) + 1,
+            text: action.payload.text,
             completed: false,
-            text: action.todo.text,
-            tag: action.todo.tag
-          }]
-          }
-      case actionTypes.TODO_SEND_CREATE:
-        return {
-          ...state, isRequesting: action.isLoading, error: ''
-        }
-      case actionTypes.TODO_SEND_CREATE_IS_FAILURE:
-        return {
-          ...state, error: action.error
-        }
-      case actionTypes.TODO_SEND_UPDATE:
-        return {
-          ...state, isRequesting: action.isLoading, error: ''
-        }
-      case actionTypes.TODO_MODIFY:
-        return {
-          ...state, todos: state.todos.map(todo => todo.id === action.todo.id ?
-            {...todo, id: action.todo.id, text: action.todo.text,
-              completed: action.todo.completed, tag: action.todo.tag }
-            : todo)
-        }
-      case actionTypes.TODO_SEND_UPDATE_IS_FAILURE:
-        return {
-          ...state, error: action.error
-        }
-      case actionTypes.TODO_SEND_DELETE:
-        return {
-          ...state, isRequesting: action.isLoading
-        }
-      case actionTypes.TODO_REMOVE:
-        return {
-          ...state, todos: state.todos.filter(todo => todo.id !== action.todo.id)
-        }
-      case actionTypes.TODO_SEND_DELETE_IS_FAILURE:
-        return {
-          ...state, error: action.error
-        }
+            tag: action.payload.tag
+        })
+        return updateObject(state, {todos: newTodos})
+      }
+      case actionTypes.TODO_SEND_CREATE:{
+        return updateObject(state, {isRequesting: action.meta.isRequesting,
+          error: null})
+      }
+      case actionTypes.TODO_SEND_CREATE_IS_FAILURE:{
+        return updateObject(state, {error: action.error})
+      }
+      case actionTypes.TODO_SEND_UPDATE:{
+        return updateObject(state, {isRequesting: action.meta.isRequesting,
+          error: null})
+      }
+      case actionTypes.TODO_MODIFY:{
+        const newTodos = updateItemInArray(state.todos, action.payload.id,
+          todo => { return updateObject(todo, {text: action.payload.text})}
+        );
+        return updateObject(state, {todos: newTodos})
+      }
+      case actionTypes.TODO_SEND_UPDATE_IS_FAILURE:{
+        return updateObject(state, {error: action.error})
+      }
+      case actionTypes.TODO_SEND_DELETE:{
+        return updateObject(state, {isRequesting: action.meta.isRequesting,
+          error: null})
+      }
+      case actionTypes.TODO_REMOVE:{
+        const newTodos = state.todos.filter(todo =>
+          todo.id !== action.payload.id);
+        return updateObject(state, {todos: newTodos});
+      }
+      case actionTypes.TODO_SEND_DELETE_IS_FAILURE:{
+        return updateObject(state, {error: action.error})
+      }
       default:
         return state;
     }

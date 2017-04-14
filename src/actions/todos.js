@@ -5,7 +5,7 @@ import * as utils from './utils';
 export const sendGetTodos = (isRequesting) => {
   return {
     type: actionTypes.TODOS_SEND_GET,
-    isRequesting: isRequesting
+    meta: {isRequesting: isRequesting}
   };
 }
 

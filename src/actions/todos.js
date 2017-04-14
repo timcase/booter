@@ -1,6 +1,6 @@
 import * as actionTypes from '../constants/action_types';
-import isObject from 'lodash/isObject';
 import { push } from 'react-router-redux';
+import * as utils from './utils';
 
 export const sendGetTodos = (isRequesting) => {
   return {
@@ -23,31 +23,6 @@ export const sendGetIsFailureTodos = (error) => {
   };
 }
 
-function checkStatus(response) {
-  if (response.ok) {
-    return Promise.resolve(response)
-  }
-
-  return response.json().then(json => {
-    const error = new Error(parseJSONerror(json) || response.statusText)
-    return Promise.reject(Object.assign(error, { response }))
-  })
-}
-
-function parseJSONerror(json){
-  if (isObject(json) === false){
-    return null;
-  }
-
-  return Object.keys(json).map((key) => {
-    return key + ' ' + json[key].join(', ')
-  }).join(" ");
-}
-
-function parseJSON(response) {
-  return response.json()
-}
-
 export const redirectToOtherList = (path) => {
   return (dispatch) => {
     dispatch(push(path));
@@ -63,8 +38,8 @@ export const getTodos = () => {
       'Authorization': `Bearer ${state().authentication.jwt}`
       }
     })
-      .then(checkStatus)
-      .then(parseJSON)
+      .then(utils.checkStatus)
+      .then(utils.parseJSON)
       .then((todos) => {
         dispatch(sendGetTodos(false));
         dispatch(sendGetIsSuccessTodos(todos))
@@ -124,8 +99,8 @@ export const createTodo = (todo) => {
         userId: state().authentication.userid
       })
     })
-      .then(checkStatus)
-      .then(parseJSON)
+      .then(utils.checkStatus)
+      .then(utils.parseJSON)
       .then((todo) => {
         dispatch(sendCreateTodo(false));
         dispatch(modifyTodo(todo))
@@ -171,8 +146,8 @@ export const updateTodo = (todo, originalTodo) => {
         tag: todo.tag
       })
     })
-      .then(checkStatus)
-      .then(parseJSON)
+      .then(utils.checkStatus)
+      .then(utils.parseJSON)
       .then((todo) => {
         dispatch(sendUpdateTodo(false));
         dispatch(modifyTodo(todo));

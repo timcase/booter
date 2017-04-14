@@ -1,5 +1,5 @@
 import * as actionTypes from '../constants/action_types';
-import isObject from 'lodash/isObject';
+import * as utils from './utils';
 import { push } from 'react-router-redux';
 
 export const sendGetDepartments = (isRequesting) => {
@@ -23,37 +23,6 @@ export const sendGetIsFailureDepartments = (error) => {
   };
 }
 
-function checkStatus(response) {
-  if (response.ok) {
-    return Promise.resolve(response)
-  }
-
-  return response.json().then(json => {
-    const error = new Error(parseJSONerror(json) || response.statusText)
-    return Promise.reject(Object.assign(error, { response }))
-  })
-}
-
-function parseJSONerror(json){
-  if (isObject(json) === false){
-    return null;
-  }
-
-  return Object.keys(json).map((key) => {
-    return key + ' ' + json[key].join(', ')
-  }).join(" ");
-}
-
-function parseJSON(response) {
-  return response.json()
-}
-
-export const redirectToOtherList = (path) => {
-  return (dispatch) => {
-    dispatch(push(path));
-  }
-}
-
 export const getDepartments = () => {
   return (dispatch, state) => {
     const url = `http://localhost:3001/departments`;
@@ -63,8 +32,8 @@ export const getDepartments = () => {
       'Authorization': `Bearer ${state().authentication.jwt}`
       }
     })
-      .then(checkStatus)
-      .then(parseJSON)
+      .then(utils.checkStatus)
+      .then(utils.parseJSON)
       .then((departments) => {
         dispatch(sendGetDepartments(false));
         dispatch(sendGetIsSuccessDepartments(departments))

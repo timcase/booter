@@ -12,7 +12,7 @@ export const sendGetTodos = (isRequesting) => {
 export const sendGetIsSuccessTodos = (todos) => {
   return {
     type: actionTypes.TODOS_SEND_GET_IS_SUCCESS,
-    todos: todos
+    payload: todos
   };
 }
 
@@ -53,21 +53,21 @@ export const getTodos = () => {
 export const sendCreateTodo = (isRequesting) => {
   return {
     type: actionTypes.TODO_SEND_CREATE,
-    isRequesting: isRequesting
+    meta: {isRequestng: isRequesting}
   };
 }
 
 export const addTodo = (todo) => {
   return {
     type: actionTypes.TODO_ADD,
-    todo: todo
+    payload: todo
   }
 }
 
 export const modifyTodo = (todo) => {
   return {
     type: actionTypes.TODO_MODIFY,
-    todo: todo
+    payload: todo
   }
 }
 
@@ -114,7 +114,7 @@ export const createTodo = (todo) => {
 export const sendUpdateTodo = (isRequesting) => {
   return {
     type: actionTypes.TODO_SEND_UPDATE,
-    isRequesting: isRequesting
+    meta: {isRequesting: isRequesting}
   };
 }
 
@@ -162,14 +162,14 @@ export const updateTodo = (todo, originalTodo) => {
 export const sendDeleteTodo = (isRequesting) => {
   return {
     type: actionTypes.TODO_SEND_DELETE,
-    isRequesting: isRequesting
+    meta: {isRequesting: isRequesting}
   }
 }
 
 export const removeTodo = (todo) => {
   return {
     type: actionTypes.TODO_REMOVE,
-    todo: todo
+    payload: todo
   }
 }
 
@@ -206,5 +206,3 @@ export const deleteTodo = (todo) => {
       .catch(() => dispatch(sendDeleteIsFailureTodo(true)));
   };
 }
-
-

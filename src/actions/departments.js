@@ -1,6 +1,5 @@
 import * as actionTypes from '../constants/action_types';
 import * as utils from './utils';
-import { push } from 'react-router-redux';
 
 export const sendGetDepartments = (isRequesting) => {
   return {

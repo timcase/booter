@@ -1,8 +1,6 @@
 import * as actionTypes from '../constants/action_types';
 import isObject from 'lodash/isObject';
 import { push } from 'react-router-redux';
-import { normalize } from 'normalizr';
-import { departmentListSchema } from '../schemas/department';
 
 export const sendGetDepartments = (isRequesting) => {
   return {
@@ -69,8 +67,6 @@ export const getDepartments = () => {
       .then(parseJSON)
       .then((departments) => {
         dispatch(sendGetDepartments(false));
-        const normalized = normalize(departments, departmentListSchema);
-        console.log(normalized);
         dispatch(sendGetIsSuccessDepartments(departments))
       })
       .catch((error) => {

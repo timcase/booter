@@ -1,4 +1,4 @@
-import * as actionTypes from '../constants/action_types';
+import * as actions from '../constants/action_types';
 import {updateObject, updateItemInArray} from './utils';
 const initialState = {
   todos: [],
@@ -6,9 +6,19 @@ const initialState = {
   error: ''
 }
 
+function createReducer(initialState, handlers) {
+  return function reducer(state = initialState, action) {
+    if (handlers.hasOwnProperty(action.type)) {
+      return handlers[action.type](state, action)
+    } else {
+      return state
+    }
+  }
+}
+
 function updateIsRequesting(state, action){
-    return updateObject(state, {isRequesting: action.meta.isRequesting,
-      error: null})
+  return updateObject(state, {isRequesting: action.meta.isRequesting,
+    error: null})
 }
 
 function updateError(state, action){
@@ -19,14 +29,15 @@ function loadTodos(state, action){
 }
 
 function addTodo(state, action){
-    const newTodos = state.todos.concat({
-        id: state.todos.reduce((maxId, todo) =>
-          Math.max(todo.id, maxId), -1) + 1,
-        text: action.payload.text,
-        completed: false,
-        tag: action.payload.tag
-    })
-    return updateObject(state, {todos: newTodos})
+  console.log(action);
+  const newTodos = state.todos.concat({
+    id: state.todos.reduce((maxId, todo) =>
+      Math.max(todo.id, maxId), -1) + 1,
+    text: action.payload.text,
+    completed: false,
+    tag: action.payload.tag
+  })
+  return updateObject(state, {todos: newTodos})
 }
 
 function modifyTodo(state, action){
@@ -42,33 +53,23 @@ function removeTodo(state, action){
   return updateObject(state, {todos: newTodos});
 }
 
+const todosReducer = createReducer(initialState, {
+  [actions.TODOS_SEND_GET]: updateIsRequesting,
+  [actions.TODOS_SEND_GET_IS_SUCCESS]: loadTodos,
+  [actions.TODOS_SEND_GET_IS_FAILURE]: updateError,
+  [actions.TODO_ADD]: addTodo,
+  [actions.TODO_SEND_CREATE]: updateIsRequesting,
+  [actions.TODO_SEND_CREATE_IS_FAILURE]: updateError,
+  [actions.TODO_SEND_UPDATE]: updateIsRequesting,
+  [actions.TODO_MODIFY]: modifyTodo,
+  [actions.TODO_SEND_UPDATE_IS_FAILURE]: updateError,
+  [actions.TODO_SEND_DELETE]: updateIsRequesting,
+  [actions.TODO_REMOVE]: removeTodo,
+  [actions.TODO_SEND_DELETE_IS_FAILURE]: updateIsRequesting
+});
+
 export default function todos( state = initialState, action){
-
-    switch (action.type) {
-      case actionTypes.TODOS_SEND_GET: return updateIsRequesting(state, action)
-      case actionTypes.TODOS_SEND_GET_IS_SUCCESS:
-        return loadTodos(state, action)
-      case actionTypes.TODOS_SEND_GET_IS_FAILURE:
-        return updateError(state, action)
-      case actionTypes.TODO_ADD: return addTodo(state, action)
-      case actionTypes.TODO_SEND_CREATE:
-        return updateIsRequesting(state, action)
-      case actionTypes.TODO_SEND_CREATE_IS_FAILURE:
-        return updateError(state, action)
-      case actionTypes.TODO_SEND_UPDATE:
-        return updateIsRequesting(state, action)
-      case actionTypes.TODO_MODIFY: return modifyTodo(state, action)
-      case actionTypes.TODO_SEND_UPDATE_IS_FAILURE:
-        return updateError(state, action)
-      case actionTypes.TODO_SEND_DELETE:
-        return updateIsRequesting(state, action)
-      case actionTypes.TODO_REMOVE: return removeTodo(state, action)
-      case actionTypes.TODO_SEND_DELETE_IS_FAILURE:
-        return updateError(state, action)
-      default:
-        return state;
-    }
-
+    return todosReducer(state, action);
 }
 
 export const getVisibleTodos = (state, filter, tag) => {

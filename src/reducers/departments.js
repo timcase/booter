@@ -6,6 +6,7 @@ const initialState = {
 }
 
 export default function departments( state = initialState, action){
+    console.log(action);
 
     switch (action.type) {
       case actionTypes.DEPARTMENTS_SEND_GET:
@@ -14,7 +15,7 @@ export default function departments( state = initialState, action){
         }
       case actionTypes.DEPARTMENTS_SEND_GET_IS_SUCCESS:
         return {
-          ...state,  departments: action.departments, error: ''
+          ...state,  departments: action.departments.entities.departments, error: ''
         }
       case actionTypes.DEPARTMENTS_SEND_GET_IS_FAILURE:
         return {

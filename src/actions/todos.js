@@ -1,6 +1,8 @@
 import * as actionTypes from '../constants/action_types';
 import { push } from 'react-router-redux';
 import * as utils from './utils';
+import { normalize } from 'normalizr';
+import * as schemas from '../schemas';
 
 export const sendGetTodos = (isRequesting) => {
   return {
@@ -12,7 +14,7 @@ export const sendGetTodos = (isRequesting) => {
 export const sendGetIsSuccessTodos = (todos) => {
   return {
     type: actionTypes.TODOS_SEND_GET_IS_SUCCESS,
-    payload: todos
+    payload: todos.entities.todos
   };
 }
 
@@ -42,7 +44,7 @@ export const getTodos = () => {
       .then(utils.parseJSON)
       .then((todos) => {
         dispatch(sendGetTodos(false));
-        dispatch(sendGetIsSuccessTodos(todos))
+        dispatch(sendGetIsSuccessTodos(normalize(todos, schemas.TodoList)))
       })
       .catch((error) => {
         dispatch(sendGetIsFailureTodos(error));

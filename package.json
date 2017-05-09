@@ -9,6 +9,7 @@
     "bootstrap": "3",
     "jwt-decode": "^2.1.0",
     "lodash": "^4.17.4",
+    "normalizr": "^3.2.2",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.2",

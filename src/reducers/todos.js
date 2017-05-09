@@ -22,6 +22,7 @@ function updateIsRequesting(state, action){
 }
 
 function updateError(state, action){
+  return state
 }
 
 function loadTodos(state, action){

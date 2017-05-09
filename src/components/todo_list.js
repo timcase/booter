@@ -29,7 +29,6 @@ class TodoList extends Component {
         <div className="row">
           <div className="col-md-6">
             <h1>Transportation Department todos</h1>
-            {this.transportation.todos.map(todo => <div key={todo.id}>{todo.text}</div>)}
           </div>
         </div>
           <div className="row">

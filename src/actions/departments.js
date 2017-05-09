@@ -1,5 +1,7 @@
 import * as actionTypes from '../constants/action_types';
 import * as utils from './utils';
+import { normalize } from 'normalizr';
+import * as schemas from '../schemas';
 
 export const sendGetDepartments = (isRequesting) => {
   return {
@@ -35,7 +37,9 @@ export const getDepartments = () => {
       .then(utils.parseJSON)
       .then((departments) => {
         dispatch(sendGetDepartments(false));
-        dispatch(sendGetIsSuccessDepartments(departments))
+        // console.log(departments);
+        console.log('norm', normalize(departments, schemas.departmentList).entities.departments);
+        dispatch(sendGetIsSuccessDepartments(normalize(departments, schemas.departmentList)));
       })
       .catch((error) => {
         dispatch(sendGetIsFailureDepartments(error));

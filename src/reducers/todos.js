@@ -22,7 +22,8 @@ function updateIsRequesting(state, action){
 }
 
 function updateError(state, action){
-  return state
+  return updateObject(state, {isRequesting: action.meta.isRequesting,
+    error: action.meta.error})
 }
 
 function loadTodos(state, action){

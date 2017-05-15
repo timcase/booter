@@ -31,7 +31,9 @@ class Todo extends Component {
 
   handleCompletedClick = () => {
     const originalTodo = Object.assign({}, this.props.todo);
-    let todo = this.props.todo;
+    let todo = this.props.todo
+    console.log(todo === this.props.todo);
+    console.log(todo == this.props.todo);
     todo.completed = true
     this.props.update(todo, originalTodo);
   }

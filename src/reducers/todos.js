@@ -7,6 +7,16 @@ const initialState = {
   error: ''
 }
 
+function modifyTodo(state, action) {
+  return {
+    ...state,
+    [action.todo.id]: {
+      ...state[action.todo.id],
+      ...action.todo
+    }
+  }
+}
+
 const byId = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.DEPARTMENTS_SEND_GET_IS_SUCCESS:
@@ -23,6 +33,7 @@ const byId = (state = initialState, action) => {
           return obj
         }, {}), error: ''
       }
+    case actionTypes.TODO_MODIFY: return modifyTodo(state, action);
     default:
       return state;
   }
@@ -36,6 +47,7 @@ const allIds = (state = [], action) => {
       return union(state, action.departments[0].todos.map(t=> {return t.id}))
     case actionTypes.TODOS_SEND_GET_IS_SUCCESS:
       return union(state, action.todos.map(t => { return t.id}))
+
     default:
       return state;
 

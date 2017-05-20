@@ -154,8 +154,8 @@ export const sendUpdateIsFailureTodo = (error) => {
 export const updateTodo = (todo, originalTodo) => {
   const url = 'http://localhost:3001/todos/' + todo.id;
   return (dispatch, state) => {
-    dispatch(sendUpdateTodo(true));
-    dispatch(modifyTodo(todo));
+    // dispatch(sendUpdateTodo(true));
+    // dispatch(modifyTodo(todo));
 
     fetch(url,{
       method: 'PUT',
@@ -174,7 +174,7 @@ export const updateTodo = (todo, originalTodo) => {
       .then(checkStatus)
       .then(parseJSON)
       .then((todo) => {
-        dispatch(sendUpdateTodo(false));
+        // dispatch(sendUpdateTodo(false));
         dispatch(modifyTodo(todo));
       })
       .catch((error) => {

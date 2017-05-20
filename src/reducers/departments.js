@@ -12,6 +12,7 @@ const byId = (state = initialState, action) => {
       return {
         ...state, ...action.departments.reduce((obj, department) => {
           obj[department.id] = department;
+          obj[department.id].todos = department.todos.map(t => {return t.id});
           return obj
         }, {}), error: ''
       }

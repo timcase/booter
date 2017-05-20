@@ -13,8 +13,8 @@ const rootReducer = combineReducers({ todos: todos,
 
 export default rootReducer;
 
-export const getVisibleTodos = (state, filter, tag) =>
-  fromTodos.getVisibleTodos(state, filter, tag);
+export const getVisibleTodos = (state, filter, tag, userId) =>
+  fromTodos.getVisibleTodos(state, filter, tag, userId);
 
 export const getAllDepartments = (state) =>
   fromDepartments.getAllDepartments(state);

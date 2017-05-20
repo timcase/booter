@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './todo.css';
 import TodoInput from './todo_input';
 import Todo from './todo';
+import flatten from 'lodash/flatten'
+import includes from 'lodash/includes'
+
 
 class TodoList extends Component {
   componentDidMount() {
@@ -23,13 +26,24 @@ class TodoList extends Component {
     return this.props.departments.filter(d => d.name === 'Transportation')[0] || {todos: []};
   }
 
+  get departmentTodoIds(){
+    return flatten(this.props.departments.map(d => d.todos));
+  }
+
+  get departmentTodos(){
+    return this.props.todos.filter(t => includes(this.departmentTodoIds, t.id));
+  }
+
   render() {
     return (
       <div className="container">
         <div className="row">
           <div className="col-md-6">
-            <h1>Transportation Department todos</h1>
-            {this.transportation.todos.map(todo => <div key={todo.id}>{todo.text}</div>)}
+            <h1>Departments</h1>
+            {this.departmentTodos.map(d =>
+              <div key={d.id}>{d.text}</div>
+            )
+            }
           </div>
         </div>
           <div className="row">

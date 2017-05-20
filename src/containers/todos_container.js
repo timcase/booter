@@ -14,10 +14,16 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = (state) => {
   return {
     departments: getAllDepartments(state.departments),
+    todos: getVisibleTodos(state.todos, 'SHOW_ALL',
+      'inbox',
+     1
+    ),
     completedTodos: getVisibleTodos(state.todos, 'SHOW_COMPLETED',
-      'inbox'),
+      'inbox',
+     1
+    ),
     incompleteTodos: getVisibleTodos(state.todos, 'SHOW_INCOMPLETE',
-      'inbox'),
+      'inbox', 1),
     isRequesting: state.todos.isRequesting,
     error: state.todos.error };
 };

@@ -1,5 +1,6 @@
 import * as actionTypes from '../constants/action_types';
 import {combineReducers } from 'redux';
+import union from 'lodash/union';
 
 const initialState = {
   isRequesting: false,
@@ -10,7 +11,7 @@ const byId = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.DEPARTMENTS_SEND_GET_IS_SUCCESS:
       return {
-        ...state, ...action.departments.map(d => {return d.todos}).reduce((obj, todo) => {
+        ...state, ...action.departments[0].todos.reduce((obj, todo) => {
           obj[todo.id] = todo;
           return obj
         }, {}), error: ''
@@ -29,15 +30,12 @@ const byId = (state = initialState, action) => {
 };
 
 const allIds = (state = [], action) => {
+
   switch (action.type) {
     case actionTypes.DEPARTMENTS_SEND_GET_IS_SUCCESS:
-      return [
-        ...state, ...action.departments.map(d => {return d.todos}).map(t => { return t.id })
-      ]
+      return union(state, action.departments[0].todos.map(t=> {return t.id}))
     case actionTypes.TODOS_SEND_GET_IS_SUCCESS:
-      return [
-        ...state, ...action.todos.map(t => { return t.id })
-      ]
+      return union(state, action.todos.map(t => { return t.id}))
     default:
       return state;
 
@@ -103,6 +101,7 @@ const allIds = (state = [], action) => {
 //           ...state, todos: state.todos.map(todo => todo.id === action.todo.id ?
 //             {...todo, id: action.todo.id, text: action.todo.text,
 //               completed: action.todo.completed, tag: action.todo.tag }
+//               d
 //             : todo)
 //         }
 //       case actionTypes.TODO_SEND_UPDATE_IS_FAILURE:
@@ -138,15 +137,15 @@ const getAllTodos= (state) =>{
   }
 }
 
-export const getVisibleTodos = (state, filter, tag) => {
+export const getVisibleTodos = (state, filter, tag, userId) => {
   const allTodos = getAllTodos(state)
   switch (filter) {
     case 'SHOW_ALL':
       return allTodos
     case 'SHOW_COMPLETED':
-      return allTodos.filter(t => t.completed).filter(todo => todo.tag === tag)
+      return allTodos.filter(t => t.completed).filter(todo => todo.tag === tag).filter(todo => todo.user_id === userId)
     case 'SHOW_INCOMPLETE':
-      return allTodos.filter(t => !t.completed).filter(todo => todo.tag === tag)
+      return allTodos.filter(t => !t.completed).filter(todo => todo.tag === tag).filter(todo => todo.user_id === userId)
     default:
       throw new Error('Unknown filter: ' + filter)
   }
